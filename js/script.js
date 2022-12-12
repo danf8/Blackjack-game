@@ -178,6 +178,7 @@ function addDealerCard(){
     dealerValue = dealerValue + Number(addCard.cards[0].value)
     $('#dealerCount').text('Dealer Count: '+dealerValue);
 }
+
 //used to have dealer draw cards after stand button hit and compare.
 function dealerLogic(){
     while(dealerValue < 21){
@@ -197,6 +198,17 @@ function dealerLogic(){
 }
 }
 
+//compare counts of dealer and player.
+
+function tieEvent(){
+    updatePlayerCount()
+    console.log(playerValue)
+    // if(playerValue === dealerValue){
+    //     console.log('It\'s a tie!')
+    // }else{
+    //     console.log('Dealer has won!')
+    // }
+}
 
 //this is for game win function
 //compare counts function
