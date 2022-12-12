@@ -25,9 +25,7 @@ main{
     #dCardOne{
         text-align: center;
     }
-    #dCardTwo{
-        text-align: right;
-    }
+
     #you{
         grid-area: you;
     }
@@ -44,4 +42,8 @@ main{
         text-align: right;
         margin-right: 10px;
     }
-    
+    /* used for showing dealer card two when player clicks stand */
+    .show{
+        text-align: right;
+        opacity: 0;
+    }

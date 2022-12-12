@@ -21,6 +21,10 @@ let startingCards;
 //used to assign card when player clicks hit
 let addCard;
 
+//used to reset game board
+$('#reset').on('click', function(){
+    location.reload()
+})
 
 //used to retreive deck id for use in start game function
 function getDeckId() {
@@ -61,7 +65,7 @@ function initialCard() {
     $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
     faceCardToNum()
-    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
+    dealerValue = Number(startingCards.cards[0].value);
     $('#dealerCount').text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $('#playerCount').text('Player Count: '+playerValue)
@@ -132,15 +136,71 @@ function checkAppendCard(){
                 addCard.cards[i].value = 10
                 break;
             case 'ACE':
-                addCard.cards[i].value = 10
-                if((playerValue + addCard.cards[i]) > 21){
-                    addCard.cards[i].value = 1
-                }else{
-                    addCard.cards[i].value = 10
-                }
+                addCard.cards[i].value = 11
                 break;
             default:
                 addCard.cards[i].value = addCard.cards[i].value;
         }
     }
 }
+
+//click stand button, card#2 is displayed and dealercount is updated.
+//if delaer count <17 dealer draws, if count >=17 no dealer draw, if dealer count =21 dealer win.
+$('#stand').on('click', dealerPlay)
+
+function dealerPlay(){
+    $.ajax({
+        url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
+    }).then(
+        (data) => {
+            addCard = data
+            showDealerCard()
+        },
+        (error) => {
+            console.log(data)
+        }
+    )
+}
+
+//shows dealer card and count
+function showDealerCard(){
+    $dealCardTwo.css('opacity', '1')
+    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
+    $('#dealerCount').text('Dealer Count: '+dealerValue);
+    dealerLogic()
+}
+
+//appends new img to dealCardTwo element.
+function addDealerCard(){
+    const $dealerImgEl = $('<img>')
+    $dealerImgEl.insertAfter($dealCardTwo)
+    $dealerImgEl.attr('src', `${addCard.cards[0].image}`)
+    dealerValue = dealerValue + Number(addCard.cards[0].value)
+    $('#dealerCount').text('Dealer Count: '+dealerValue);
+}
+//used to have dealer draw cards after stand button hit and compare.
+function dealerLogic(){
+    while(dealerValue < 21){
+        console.log(dealerValue)
+    if(dealerValue === 21){
+        console.log('compare counts')
+        break;
+    }else if(dealerValue > 21){
+        console.log('dealer lose, player wins')
+        break;
+    }else if(dealerValue <21 && dealerValue >= 17){
+        console.log('compare counts')
+        break;
+    }else{
+        addDealerCard()
+    }
+}
+}
+
+
+//this is for game win function
+//compare counts function
+//if dealer count and player count same result tie
+//if dealer or player over 21 they lose
+//compare dealer count to player count, if player closed to 21, player wins
+//if dealer closer to 21 dealer wins
