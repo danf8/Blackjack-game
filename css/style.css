@@ -1,0 +1,47 @@
+
+body {
+    margin: 0;
+    font-family: Helvetica;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "header header header header"
+    "main main main  sidebar"
+    "main main main .";
+
+}
+main{
+    grid-area:main;
+}
+#title{
+    grid-area: header;
+    text-align: center;
+    }
+    #dealer{
+    grid-area: dealer;
+    }
+    #dCardOne{
+        text-align: center;
+    }
+    #dCardTwo{
+        text-align: right;
+    }
+    #you{
+        grid-area: you;
+    }
+    #youCardOne{
+        text-align:center;
+    }
+    #youCardTwo{
+        text-align: right;
+    }
+    #sidebar{
+        grid-area: sidebar;
+        display:flex;
+        flex-direction: column;
+        text-align: right;
+        margin-right: 10px;
+    }
+    
