@@ -1,3 +1,4 @@
+// need to add a readme.md file to this project
 //function for hit that draws another card to your hand
 //function for stand button thtat shows dealer card and value
 //function for bet
@@ -5,8 +6,8 @@
 // can set money equal to variable then update that and add to html element
 //need to add dealer and player value tracker to appendCard function
 const $dealerCard = $('#dCardOne');
-let $dealCardTwo = $('#dCardTwo')
-let $yourCardOne = $('#youCardOne');
+const $dealCardTwo = $('#dCardTwo')
+const $yourCardOne = $('#youCardOne');
 const $yourCardTwo = $('#youCardTwo');
 const $pEl = $('#you') 
 //used to track player card value
@@ -17,7 +18,7 @@ let dealerValue;
 let deckId;
 //used to assign cards at start of game
 let startingCards;
-//used to assign card when play clicks hit
+//used to assign card when player clicks hit
 let addCard;
 
 
@@ -37,6 +38,7 @@ function getDeckId() {
 }
 //call getDeckId to allow startGame to have access to deckId
 getDeckId();
+//event listener for starting the game
 $('#start').on('click', startGame)
 //starts game and draws first four cards
 function startGame() {
@@ -58,10 +60,11 @@ function initialCard() {
     $dealCardTwo.attr('src', `${startingCards.cards[1].image}`);
     $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
+    faceCardToNum()
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-    $('#dealerCount').text(dealerValue);
+    $('#dealerCount').text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
-    $('#playerCount').text(playerValue)
+    $('#playerCount').text('Player Count: '+playerValue)
 }
 
 $('#hit').on('click', drawCard)
@@ -79,10 +82,22 @@ function drawCard(){
         }
     )
 }
-
+//adds card to screen when player clicks hit
 function appendCard(){
     const $imgEl = $(`<img>`)
     $imgEl.insertAfter($yourCardTwo)
     $imgEl.attr('src', `${addCard.cards[0].image}`)
-    //need to add dealer and player value tracker here
+    updatePlayerCount()
+}
+
+//used to change player count
+function updatePlayerCount() {
+    playerValue = playerValue + Number(addCard.cards[0].value )
+    $('#playerCount').text('Player Count: '+playerValue)
+}
+
+function faceCardToNum(){
+    for(let i=0; i < startingCards.cards.length; i++){
+        console.log(startingCards.cards[i].value)
+    }
 }
