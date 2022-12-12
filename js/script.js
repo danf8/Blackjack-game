@@ -68,7 +68,7 @@ function initialCard() {
 }
 
 $('#hit').on('click', drawCard)
-
+//when click on hit button will draw new card for player and dispaly on screen
 function drawCard(){
     $.ajax({
         url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
@@ -87,17 +87,60 @@ function appendCard(){
     const $imgEl = $(`<img>`)
     $imgEl.insertAfter($yourCardTwo)
     $imgEl.attr('src', `${addCard.cards[0].image}`)
+    checkAppendCard()
     updatePlayerCount()
 }
 
-//used to change player count
+//used to change player count when new card is clicked
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value )
     $('#playerCount').text('Player Count: '+playerValue)
 }
 
+//used to check starting cards values  for facecards
 function faceCardToNum(){
     for(let i=0; i < startingCards.cards.length; i++){
-        console.log(startingCards.cards[i].value)
+        switch(startingCards.cards[i].value){
+            case 'QUEEN':
+                startingCards.cards[i].value = 10;
+                break;
+            case 'KING':
+                startingCards.cards[i].value = 10;
+                break;
+            case 'JACK':
+                startingCards.cards[i].value = 10;
+                break;
+            case 'ACE':
+                startingCards.cards[i].value = 11;
+                break;
+            default:
+                startingCards.cards[i].value = startingCards.cards[i].value;
+        }
+    }
+}
+//used to check the added cards value for facecards and assign ace card value
+function checkAppendCard(){
+    for(let i=0; i < addCard.cards.length; i++){
+        switch(addCard.cards[i].value){
+            case 'QUEEN':
+                addCard.cards[i].value = 10
+                break;
+            case 'KING':
+                addCard.cards[i].value = 10
+                break;
+            case 'JACK':
+                addCard.cards[i].value = 10
+                break;
+            case 'ACE':
+                addCard.cards[i].value = 10
+                if((playerValue + addCard.cards[i]) > 21){
+                    addCard.cards[i].value = 1
+                }else{
+                    addCard.cards[i].value = 10
+                }
+                break;
+            default:
+                addCard.cards[i].value = addCard.cards[i].value;
+        }
     }
 }
