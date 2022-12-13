@@ -169,6 +169,8 @@ function checkAppendCard(){
     }
 }
 
+//create a function for ACE value
+
 //click stand button, card#2 is displayed and dealercount is updated.
 //if delaer count <17 dealer draws, if count >=17 no dealer draw, if dealer count =21 dealer win.
 $('#stand').on('click', dealerPlay)
@@ -209,13 +211,13 @@ function addDealerCard(){
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
-    while(dealerValue < 21){
+    while(dealerValue <= 21){
+        updateComputerGlobalCount(dealerValue)
         console.log(dealerValue)
     if(dealerValue === 21){
         tieEvent()
         break;
-    }else if(dealerValue > 21){
-        overTwentyOne()
+    }else if(dealerValue >= 22){
         break;
     }else if(dealerValue <21 && dealerValue >= 17){
         console.log('compare counts')
@@ -223,9 +225,8 @@ function dealerLogic(){
         break;
     }else{
         addDealerCard()
-
     }
-}
+}if(dealerValue >=22){overTwentyOne()}
 }
 
 //compare counts of dealer and player to determine winner
@@ -241,6 +242,7 @@ function tieEvent(){
 function overTwentyOne() {
     console.log('player has won, add x2 to money')
 }
+
 //calculates winner if neither are 21 
 function compareCounts(){
     let compareDealer = 21 - dealerValue
@@ -253,6 +255,7 @@ function compareCounts(){
         console.log('player lost, computer won')
     }
 }
+
 //if player goes over 21 put that losing function under the hit button
 //this is for game win function
 //compare counts function
