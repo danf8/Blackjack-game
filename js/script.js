@@ -1,5 +1,5 @@
 
-
+//for betting button should set money element using js then assign variable to it.
 
 // need to add a readme.md file to this project
 //function for hit that draws another card to your hand
@@ -25,11 +25,15 @@ let startingCards;
 let addCard;
 
 //used to update global variable playerValue
-function updateGlobalCount(count){
+function updatePlayerGlobalCount(count){
     count = playerValue
     console.log(count)
 }
 
+function updateComputerGlobalCount(counter){
+    counter = dealerValue
+    console.log(counter)
+}
 //used to reset game board
 $('#reset').on('click', function(){
     location.reload()
@@ -78,7 +82,8 @@ function initialCard() {
     $('#dealerCount').text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $('#playerCount').text('Player Count: '+playerValue)
-    updateGlobalCount(playerValue)
+    updatePlayerGlobalCount(playerValue)
+    updateComputerGlobalCount(dealerValue)
 }
 
 $('#hit').on('click', drawCard)
@@ -109,7 +114,7 @@ function appendCard(){
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value )
     $('#playerCount').text('Player Count: '+playerValue)
-    updateGlobalCount(playerValue)
+    updatePlayerGlobalCount(playerValue)
     playerOverTwentyOne()
 }
 //used to alert player has gone over twenty one and computer has won
@@ -187,6 +192,7 @@ function showDealerCard(){
     $dealCardTwo.css('opacity', '1')
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     $('#dealerCount').text('Dealer Count: '+dealerValue);
+    updateComputerGlobalCount(dealerValue)
     dealerLogic()
 }
 
@@ -195,9 +201,10 @@ function addDealerCard(){
     const $dealerImgEl = $('<img>')
     $dealerImgEl.insertAfter($dealCardTwo)
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`)
+    checkAppendCard()
     dealerValue = dealerValue + Number(addCard.cards[0].value)
     $('#dealerCount').text('Dealer Count: '+dealerValue);
-    checkAppendCard()
+    updateComputerGlobalCount(dealerValue)
 }
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
@@ -253,3 +260,4 @@ function compareCounts(){
 //if dealer or player over 21 they lose
 //compare dealer count to player count, if player closed to 21, player wins
 //if dealer closer to 21 dealer wins
+
