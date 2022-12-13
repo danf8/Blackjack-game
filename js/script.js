@@ -24,15 +24,21 @@ let startingCards;
 //used to assign card when player clicks hit
 let addCard;
 
+let playerMoney = 100;
+let betAmount = 0
+
+let dealerWon;
+let playerWon;
+let tie;
+
 //used to update global variable playerValue
+
 function updatePlayerGlobalCount(count){
     count = playerValue
-    console.log(count)
 }
-
+//update global dealer count 
 function updateComputerGlobalCount(counter){
     counter = dealerValue
-    console.log(counter)
 }
 //used to reset game board
 $('#reset').on('click', function(){
@@ -115,16 +121,9 @@ function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value )
     $('#playerCount').text('Player Count: '+playerValue)
     updatePlayerGlobalCount(playerValue)
-    playerOverTwentyOne()
+    overTwentyOne() 
 }
-//used to alert player has gone over twenty one and computer has won
-function playerOverTwentyOne(){
-    if(playerValue > 21){
-        console.log('player has lost')
-        //then need to reset game
-        //add change button to red feature here.
-    }
-}
+
 
 //used to check starting cards values  for facecards
 function faceCardToNum(){
@@ -205,7 +204,6 @@ function checkAppendCard(){
     }
 }
 
-//create a function for ACE value
 
 
 //click stand button, card#2 is displayed and dealercount is updated.
@@ -250,14 +248,13 @@ function addDealerCard(){
 function dealerLogic(){
     while(dealerValue <= 21){
         updateComputerGlobalCount(dealerValue)
-        console.log(dealerValue)
     if(dealerValue === 21){
-        tieEvent()
+        compareCounts()
         break;
     }else if(dealerValue >= 22){
+        overTwentyOne()
         break;
     }else if(dealerValue <21 && dealerValue >= 17){
-        console.log('compare counts')
             compareCounts()
         break;
     }else{
@@ -266,18 +263,17 @@ function dealerLogic(){
 }if(dealerValue >=22){overTwentyOne()}
 }
 
-//compare counts of dealer and player to determine winner
-function tieEvent(){
-    console.log(playerValue)
-    if(playerValue === 21){
-        console.log('It\'s a tie!')
-    }else{
-        console.log('Dealer has won!')
-    }
-}
-
+//used to check if player or computer go over twenty one
 function overTwentyOne() {
-    console.log('player has won, add x2 to money')
+    if(playerValue >= 22){
+        // console.log('player lost')
+        playerWon = false;
+        dealerWon = true;
+    }else if(dealerValue >= 22){
+        // console.log('player has won, add x2 to money')
+        dealerWon = false;
+        playerWon = true;
+    }endOfRound()
 }
 
 //calculates winner if neither are 21 
@@ -285,19 +281,52 @@ function compareCounts(){
     let compareDealer = 21 - dealerValue
     let comparePlayer = 21 - playerValue
     if(compareDealer === comparePlayer){
-        console.log("it's a tie")
+        // console.log("it's a tie")
+        tie = true;
     }else if(compareDealer > comparePlayer){
-        console.log('dealer lost, player won')
+        // console.log('dealer lost, player won')
+        dealerWon = false;
+        playerWon = true;
     }else if(compareDealer < comparePlayer){
-        console.log('player lost, computer won')
+        // console.log('player lost, computer won')
+        dealerWon = true;
+        playerWon = false;
+    }endOfRound()
+}
+
+// let dealerWon;
+// let playerWon;
+// let tie;
+
+function endOfRound(){
+    if(tie){
+        playerMoney = playerMoney + betAmount
+        betAmount = 0;
+        updateMoneyAndBet()
+    }else if(playerWon){
+        console.log('congrats you won your bet x2')
+        playerMoney = playerMoney + (betAmount * 2)
+        betAmount = 0;
+        updateMoneyAndBet()
+    }else if(dealerWon){
+        console.log('you lost, lose you bet')
+        playerMoney = playerMoney - betAmount;
+        betAmount = 0
+        updateMoneyAndBet()
     }
 }
 
-//if player goes over 21 put that losing function under the hit button
-//this is for game win function
-//compare counts function
-//if dealer count and player count same result tie
-//if dealer or player over 21 they lose
-//compare dealer count to player count, if player closed to 21, player wins
-//if dealer closer to 21 dealer wins
+$('#bet').on('click',placeBet)
 
+
+function placeBet(){
+    betAmount = 10
+    playerMoney = playerMoney - betAmount
+    updateMoneyAndBet()
+}
+function updateMoneyAndBet(){
+    $('#amount-bet').text(`Betting: $${betAmount}`)
+    $('#player-money').text(`Starting amount: $${playerMoney}`)
+}
+//funciton that calls start after endofround is called.
+//click removes previous cards from scrren. can assing img added an id then remove those id's, can readd the opacity to dealer card 2
