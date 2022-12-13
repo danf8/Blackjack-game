@@ -1,6 +1,6 @@
 
 //for betting button should set money element using js then assign variable to it.
-
+// need to add ace function to check assign correct value
 // need to add a readme.md file to this project
 //function for hit that draws another card to your hand
 //function for stand button thtat shows dealer card and value
@@ -140,7 +140,25 @@ function faceCardToNum(){
                 startingCards.cards[i].value = 10;
                 break;
             case 'ACE':
-                startingCards.cards[i].value = 11;
+                checkStartAce()
+                function checkStartAce(){
+                    if(startingCards.cards[i].value === "ACE"){
+                        startingCards.cards[i].value = 11
+                        if((playerValue + startingCards.cards[i].value) > 21 || (dealerValue + startingCards.cards[i].value) > 21 ){
+                            if((playerValue + startingCards.cards[i].value) > 21){
+                                startingCards.cards[i].value = 1
+                            }else if((dealerValue + astartingCards.cards[i].value) > 21){
+                                startingCards.cards[i].value = 1
+                            }
+                        }else if ((playerValue + startingCards.cards[i].value) < 21 || (dealerValue + startingCards.cards[i].value) < 21){
+                            if((playerValue + startingCards.cards[i].value) > 21){
+                                startingCards.cards[i].value = 11
+                            }else if((dealerValue + startingCards.cards[i].value) > 21){
+                                startingCards.cards[i].value = 11
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 startingCards.cards[i].value = startingCards.cards[i].value;
@@ -161,7 +179,25 @@ function checkAppendCard(){
                 addCard.cards[i].value = 10
                 break;
             case 'ACE':
-                addCard.cards[i].value = 11
+                checkAce()
+                function checkAce(){
+                    if(addCard.cards[i].value === "ACE"){
+                        addCard.cards[i].value = 11
+                        if((playerValue + addCard.cards[i].value) > 21 || (dealerValue + addCard.cards[i].value) > 21 ){
+                            if((playerValue + addCard.cards[i].value) > 21){
+                                addCard.cards[i].value = 1
+                            }else if((dealerValue + addCard.cards[i].value) > 21){
+                                addCard.cards[i].value = 1
+                            }
+                        }else if ((playerValue + addCard.cards[i].value) < 21 || (dealerValue + addCard.cards[i].value) < 21){
+                            if((playerValue + addCard.cards[i].value) > 21){
+                                addCard.cards[i].value = 11
+                            }else if((dealerValue + addCard.cards[i].value) > 21){
+                                addCard.cards[i].value = 11
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 addCard.cards[i].value = addCard.cards[i].value;
@@ -170,6 +206,7 @@ function checkAppendCard(){
 }
 
 //create a function for ACE value
+
 
 //click stand button, card#2 is displayed and dealercount is updated.
 //if delaer count <17 dealer draws, if count >=17 no dealer draw, if dealer count =21 dealer win.
