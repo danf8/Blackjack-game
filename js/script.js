@@ -41,9 +41,9 @@ function updateComputerGlobalCount(counter){
     counter = dealerValue
 }
 //used to reset game board
-$('#reset').on('click', function(){
-    location.reload()
-})
+// $('#reset').on('click', function(){
+//     location.reload()
+// })
 
 //used to retreive deck id for use in start game function
 function getDeckId() {
@@ -109,7 +109,7 @@ function drawCard(){
 }
 //adds card to screen when player clicks hit
 function appendCard(){
-    const $imgEl = $(`<img>`)
+    const $imgEl = $(`<img class="added-card">`)
     $imgEl.insertAfter($yourCardTwo)
     $imgEl.attr('src', `${addCard.cards[0].image}`)
     checkAppendCard()
@@ -235,7 +235,7 @@ function showDealerCard(){
 
 //appends new img to dealCardTwo element.
 function addDealerCard(){
-    const $dealerImgEl = $('<img>')
+    const $dealerImgEl = $('<img class="added-card">')
     $dealerImgEl.insertAfter($dealCardTwo)
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`)
     checkAppendCard()
@@ -294,9 +294,6 @@ function compareCounts(){
     }endOfRound()
 }
 
-// let dealerWon;
-// let playerWon;
-// let tie;
 
 function endOfRound(){
     if(tie){
@@ -324,9 +321,26 @@ function placeBet(){
     playerMoney = playerMoney - betAmount
     updateMoneyAndBet()
 }
+
 function updateMoneyAndBet(){
     $('#amount-bet').text(`Betting: $${betAmount}`)
     $('#player-money').text(`Starting amount: $${playerMoney}`)
 }
+$('#next-round').on('click',function(){
+    console.log('works')
+    nextRound()
+})
+function nextRound() {
+    $('.added-card').remove()
+    $dealCardTwo.css('opacity', '0')
+    if(playerMoney > 0){
+        startGame()
+    }else {alert('Oh no you ran out of money')}
+
+}
 //funciton that calls start after endofround is called.
 //click removes previous cards from scrren. can assing img added an id then remove those id's, can readd the opacity to dealer card 2
+
+
+
+//issue to fix, when player gets dealt 21 in first hand should automatically win.
