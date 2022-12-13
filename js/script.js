@@ -1,3 +1,6 @@
+
+
+
 // need to add a readme.md file to this project
 //function for hit that draws another card to your hand
 //function for stand button thtat shows dealer card and value
@@ -20,6 +23,12 @@ let deckId;
 let startingCards;
 //used to assign card when player clicks hit
 let addCard;
+
+//used to update global variable playerValue
+function updateGlobalCount(count){
+    count = playerValue
+    console.log(count)
+}
 
 //used to reset game board
 $('#reset').on('click', function(){
@@ -69,6 +78,7 @@ function initialCard() {
     $('#dealerCount').text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $('#playerCount').text('Player Count: '+playerValue)
+    updateGlobalCount(playerValue)
 }
 
 $('#hit').on('click', drawCard)
@@ -99,6 +109,16 @@ function appendCard(){
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value )
     $('#playerCount').text('Player Count: '+playerValue)
+    updateGlobalCount(playerValue)
+    playerOverTwentyOne()
+}
+//used to alert player has gone over twenty one and computer has won
+function playerOverTwentyOne(){
+    if(playerValue > 21){
+        console.log('player has lost')
+        //then need to reset game
+        //add change button to red feature here.
+    }
 }
 
 //used to check starting cards values  for facecards
@@ -177,39 +197,56 @@ function addDealerCard(){
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`)
     dealerValue = dealerValue + Number(addCard.cards[0].value)
     $('#dealerCount').text('Dealer Count: '+dealerValue);
+    checkAppendCard()
 }
 
-//used to have dealer draw cards after stand button hit and compare.
+//used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
     while(dealerValue < 21){
         console.log(dealerValue)
     if(dealerValue === 21){
-        console.log('compare counts')
+        tieEvent()
         break;
     }else if(dealerValue > 21){
-        console.log('dealer lose, player wins')
+        overTwentyOne()
         break;
     }else if(dealerValue <21 && dealerValue >= 17){
         console.log('compare counts')
+            compareCounts()
         break;
     }else{
         addDealerCard()
+
     }
 }
 }
 
-//compare counts of dealer and player.
-
+//compare counts of dealer and player to determine winner
 function tieEvent(){
-    updatePlayerCount()
     console.log(playerValue)
-    // if(playerValue === dealerValue){
-    //     console.log('It\'s a tie!')
-    // }else{
-    //     console.log('Dealer has won!')
-    // }
+    if(playerValue === 21){
+        console.log('It\'s a tie!')
+    }else{
+        console.log('Dealer has won!')
+    }
 }
 
+function overTwentyOne() {
+    console.log('player has won, add x2 to money')
+}
+//calculates winner if neither are 21 
+function compareCounts(){
+    let compareDealer = 21 - dealerValue
+    let comparePlayer = 21 - playerValue
+    if(compareDealer === comparePlayer){
+        console.log("it's a tie")
+    }else if(compareDealer > comparePlayer){
+        console.log('dealer lost, player won')
+    }else if(compareDealer < comparePlayer){
+        console.log('player lost, computer won')
+    }
+}
+//if player goes over 21 put that losing function under the hit button
 //this is for game win function
 //compare counts function
 //if dealer count and player count same result tie
