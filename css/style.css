@@ -9,12 +9,15 @@ body {
     grid-template-areas: 
     "header header header header"
     "main main main  sidebar"
-    "main main main .";
+    "main main main sidebar";
+    background: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-size: cover;
 
 }
 main{
     grid-area:main;
 }
+
 #title{
     grid-area: header;
     text-align: center;
@@ -40,7 +43,9 @@ main{
         display:flex;
         flex-direction: column;
         text-align: right;
-        margin-right: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        /* margin-right: 10px; */
     }
     /* used for showing dealer card two when player clicks stand */
     .show{
