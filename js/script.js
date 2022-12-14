@@ -1,5 +1,4 @@
 
-// need to add ace function to check assign correct value
 // need to add a readme.md file to this project
 
 const $dealerCard = $('#dCardOne');
@@ -24,11 +23,20 @@ let betAmount = 0;
 let dealerWon;
 let playerWon;
 let tie;
-
+//sets image width
 $('img').css({"width" : "126", "height" : "214"});
-
+//game display buttons to start game
+$('#bet').on('click', function(){
+    $('#reset').css('opacity', '1')
+    $('#start').css('opacity', '1')
+    $('#bet').text('Click to Place Bet')
+})
+$('#start').on('click', function(){
+    $('main').css('opacity', '1')
+    $('button').css('opacity', '1')
+    $('#start').remove()
+})
 //used to update global variable playerValue
-
 function updatePlayerGlobalCount(count){
     count = playerValue;
 }
@@ -304,7 +312,7 @@ function endOfRound(){
         updateMoneyAndBet()
     }else if(dealerWon){
         console.log('you lost, lose you bet');
-        playerMoney = playerMoney - betAmount;
+        playerMoney = playerMoney;
         betAmount = 0;
         updateMoneyAndBet();
     }

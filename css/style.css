@@ -19,6 +19,7 @@ main{
 }
 
 #title{
+    color: white;
     grid-area: header;
     text-align: center;
     }
@@ -46,6 +47,21 @@ main{
         padding-right: 10px;
         padding-left: 10px;
         /* margin-right: 10px; */
+    }
+    p{
+        color: white;
+    }
+/* once start button is clicked will add opacity back to display */
+   main {
+    opacity: 0;
+    }
+    /* once bet is clicked will add opacity to start and reset buttons */
+    /* once start is clicked will add opacity to main and all buttons */
+    button {
+        opacity: 0;
+    }
+    #bet{
+        opacity: 1;
     }
     /* used for showing dealer card two when player clicks stand */
     .show{
