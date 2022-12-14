@@ -41,9 +41,9 @@ function updateComputerGlobalCount(counter){
     counter = dealerValue
 }
 //used to reset game board
-// $('#reset').on('click', function(){
-//     location.reload()
-// })
+$('#reset').on('click', function(){
+    location.reload()
+})
 
 //used to retreive deck id for use in start game function
 function getDeckId() {
@@ -100,6 +100,9 @@ function drawCard(){
     }).then(
         (data) => {
             addCard = data
+            dealerWon = 0
+            playerWon = 0
+            tie = 0
             appendCard()
         },
         (error) => {
@@ -262,7 +265,6 @@ function dealerLogic(){
     }
 }if(dealerValue >=22){overTwentyOne()}
 }
-
 //used to check if player or computer go over twenty one
 function overTwentyOne() {
     if(playerValue >= 22){
@@ -275,7 +277,6 @@ function overTwentyOne() {
         playerWon = true;
     }endOfRound()
 }
-
 //calculates winner if neither are 21 
 function compareCounts(){
     let compareDealer = 21 - dealerValue
@@ -313,9 +314,8 @@ function endOfRound(){
     }
 }
 
+
 $('#bet').on('click',placeBet)
-
-
 function placeBet(){
     betAmount = 10
     playerMoney = playerMoney - betAmount
@@ -344,3 +344,9 @@ function nextRound() {
 
 
 //issue to fix, when player gets dealt 21 in first hand should automatically win.
+
+
+
+
+
+
