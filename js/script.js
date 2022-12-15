@@ -1,6 +1,4 @@
 
-// need to add a readme.md file to this project
-
 const $dealerCard = $('#dCardOne');
 const $dealCardTwo = $('#dCardTwo');
 const $yourCardOne = $('#youCardOne');
@@ -25,6 +23,13 @@ let playerWon;
 let tie;
 //sets image width
 $('img').css({"width" : "126", "height" : "214"});
+
+//used to remove current background and get player to table/game
+$('#enter-the-game').on('click', function(){
+     $('#enter-the-game').fadeOut(900)
+    $('div').fadeOut(900)
+})
+
 //game display buttons to start game
 $('#bet').on('click', function(){
     $('#reset').css('opacity', '1')

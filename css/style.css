@@ -10,12 +10,15 @@ body {
     "header header header header"
     "main main main  sidebar"
     "main main main sidebar";
-    background: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-image: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+
     background-size: cover;
+
 
 }
 main{
     grid-area:main;
+    opacity: 0;
 }
 
 #title{
@@ -46,15 +49,11 @@ main{
         text-align: right;
         padding-right: 10px;
         padding-left: 10px;
-        /* margin-right: 10px; */
     }
     p{
         color: white;
     }
 /* once start button is clicked will add opacity back to display */
-   main {
-    opacity: 0;
-    }
     /* once bet is clicked will add opacity to start and reset buttons */
     /* once start is clicked will add opacity to main and all buttons */
     button {
@@ -67,4 +66,23 @@ main{
     .show{
         text-align: right;
         opacity: 0;
+    }
+
+
+
+    .change-to-game{
+        color: red;
+    }
+    div{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background-image: url('https://images.pexels.com/photos/3216789/pexels-photo-3216789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        background-size: cover;
+    }
+    #enter-the-game{
+        position: absolute;
+        opacity: 1;
+        top: 200px;
     }

@@ -1,6 +1,6 @@
 #<u>Blackjack Game</u>
 
-###  <sub>A web application that allows the suer to play the casino game Blackjack utilzing the Card Deck API.<sub>
+###  <sub>A web application that allows the user to play the casino game Blackjack utilzing the Card Deck API.<sub>
 
 ##Technologies Used
 
