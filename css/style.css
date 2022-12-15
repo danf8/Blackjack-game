@@ -11,11 +11,9 @@ body {
     "main main main  sidebar"
     "main main main sidebar";
     background-image: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
-
     background-size: cover;
-
-
 }
+
 main{
     grid-area:main;
     opacity: 0;
@@ -25,64 +23,70 @@ main{
     color: white;
     grid-area: header;
     text-align: center;
-    }
-    #dealer{
+}
+
+#dealer{
     grid-area: dealer;
-    }
-    #dCardOne{
-        text-align: center;
-    }
+}
 
-    #you{
-        grid-area: you;
-    }
-    #youCardOne{
-        text-align:center;
-    }
-    #youCardTwo{
-        text-align: right;
-    }
-    #sidebar{
-        grid-area: sidebar;
-        display:flex;
-        flex-direction: column;
-        text-align: right;
-        padding-right: 10px;
-        padding-left: 10px;
-    }
-    p{
-        color: white;
-    }
-/* once start button is clicked will add opacity back to display */
-    /* once bet is clicked will add opacity to start and reset buttons */
-    /* once start is clicked will add opacity to main and all buttons */
-    button {
-        opacity: 0;
-    }
-    #bet{
-        opacity: 1;
-    }
+#dCardOne{
+    text-align: center;
+}
+
+#you{
+    grid-area: you;
+}
+
+#youCardOne{
+    text-align:center;
+}
+
+#youCardTwo{
+    text-align: right;
+}
+
+#sidebar{
+    grid-area: sidebar;
+    display:flex;
+    flex-direction: column;
+    text-align: right;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+p{
+    color: white;
+}
+
+button {
+    opacity: 0;
+    border: 2px solid rgb(130, 108, 108);
+    border-radius: 45%;
+}
+#bet{
+    opacity: 1;
+}
     /* used for showing dealer card two when player clicks stand */
-    .show{
-        text-align: right;
-        opacity: 0;
-    }
+.show{
+    text-align: right;
+    opacity: 0;
+}
 
+.change-to-game{
+    color: red;
+}
 
+div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-image: url('https://images.pexels.com/photos/3216789/pexels-photo-3216789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-size: cover;
+}
 
-    .change-to-game{
-        color: red;
-    }
-    div{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        background-image: url('https://images.pexels.com/photos/3216789/pexels-photo-3216789.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-        background-size: cover;
-    }
-    #enter-the-game{
-        position: absolute;
-        opacity: 1;
-        top: 200px;
-    }
+#enter-the-game{
+    position: absolute;
+    opacity: 1;
+    top: 200px;
+}
