@@ -32,7 +32,12 @@ main{
 #dCardOne{
     text-align: center;
 }
-
+#dCardTwo{
+    display: inline!important;
+}
+.added-card{
+    text-align: right;
+}
 #you{
     grid-area: you;
 }
@@ -62,6 +67,7 @@ button {
     opacity: 0;
     border: 2px solid rgb(130, 108, 108);
     border-radius: 45%;
+    margin-bottom: 5px!important;
 }
 #bet{
     opacity: 1;
@@ -72,9 +78,9 @@ button {
     opacity: 0;
 }
 
-.change-to-game{
+/* .change-to-game{
     color: red;
-}
+} */
 
 div{
     position: absolute;

@@ -8,6 +8,12 @@
     <script defer src="./js/script.js"></script>
     <link rel="stylesheet" href="./css/style.css">
     <title>Blackjack</title>
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+    crossorigin="anonymous"
+  />
 </head>
 <body>
     <h1 id="title">BlackJack</h1>
@@ -20,19 +26,19 @@
             <img id="youCardTwo">
     </main>
     <div>
-        <button id="enter-the-game">Click Here to Enter</button>
+        <button id="enter-the-game" class="btn btn-primary">Click Here to Enter</button>
     </div>
     <aside id="sidebar">
         <p id="dealerCount" class="game-stats"></p>
         <p id="amount-bet" class="game-stats"></p>
         <p id="playerCount" class="game-stats"></p>
         <p id="player-money" class="game-stats"></p>
-        <button id="bet">Click to Place Bet and Begin</button>        
-        <button id="start">Start</button>
-        <button id="reset">Reset</button>
-        <button id="next-round" class="win-or-lose">Next Round</button>
-        <button id="hit" class="win-or-lose">Hit</button>
-        <button id="stand" class="win-or-lose">Stand</button>
+        <button id="bet" class="btn btn-outline-primary">Click to Place Bet and Begin</button>        
+        <button id="start" class="btn btn-outline-secondary">Start</button>
+        <button id="reset" class="btn btn-secondary">Reset</button>
+        <button id="next-round" class="win-or-lose btn btn-outline-secondary">Next Round</button>
+        <button id="hit" class="win-or-lose btn btn-outline-secondary">Hit</button>
+        <button id="stand" class="win-or-lose btn btn-outline-secondary">Stand</button>
     </aside>
 </body>
 </html>
