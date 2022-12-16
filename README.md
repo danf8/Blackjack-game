@@ -11,12 +11,12 @@
 5. Card Deck API
 
 ##ScreenShots
-![This is an image](view upload assets to insert images )
-
+![Blackjack screenshot](Blackjack1.png)
 
 ##Playing the Game
 Please click the LINKHERE to launch the deployed app
 
 ##Future Enhancements
-* placehodler
-* placeholder
+* Add mobile design
+* Add additional betting amounts
+* Adjust gameplay story to make game easier to understand and when to click each button.
