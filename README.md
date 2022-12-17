@@ -15,13 +15,12 @@
 
 ##Playing the Game
 * Instructions once game has begun: 
-* Click 'Hit' button to draw an additional card
-* Click 'Stand' button to end drawing and dealer will play.
-* At end of round please click place 'Bet' button then click 'Next round' button
+    * Click 'Hit' button to draw an additional card
+    * Click 'Stand' button to end drawing and dealer will play.
+    * At end of round please click place 'Bet' button then click 'Next round' button
 
 Please click the [LINK](https://danf8.github.io/Blackjack-game/) to launch the deployed app
 
 ##Future Enhancements
 * Add mobile design
 * Add additional betting amounts
-* Adjust gameplay story to make game easier to understand and when to click each button.

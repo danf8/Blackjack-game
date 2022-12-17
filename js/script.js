@@ -47,6 +47,7 @@ $('#start').on('click', function(){
     $('main').css('opacity', '1')
     $('button').css('opacity', '1')
     $('#start').remove()
+    hideBetAndRound()
 });
 
 //used to reset game board
@@ -59,6 +60,7 @@ $('#hit').on('click', drawCard);
 
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
 $('#stand').on('click', function(){
+    showBetAndRound()
     dealerPlay()
 });
 
@@ -125,6 +127,7 @@ function playerDealtTwentyOne(){
     if(playerValue === 21){
         alert('Congrats you were dealt Blackjack. Please click place bet button then next round');
         showDealerCard();
+        showBetAndRound()
     }
 };
 
@@ -271,7 +274,7 @@ function showDealerCard(){
     }else{
         dealerWon = false;
         playerWon = true;
-        compareCounts();
+        endOfRound();
     } dealerLogic();
 };
 
@@ -309,10 +312,12 @@ function dealerLogic(){
 function overTwentyOne() {
     if(playerValue >= 22){
         alert('Oh no you went over 21 and lost. Please click Bet button then next round');
+        showBetAndRound()
         playerWon = false;
         dealerWon = true;
     }else if(dealerValue >= 22){
         alert('Dealer went over 21. You Win! Please click Bet button then next round');
+        showBetAndRound()
         dealerWon = false;
         playerWon = true;
     }endOfRound();
@@ -340,12 +345,10 @@ function endOfRound(){
         betAmount = 0;
         updateMoneyAndBet();
     }else if(playerWon){
-        console.log('congrats you won your bet x2');
         playerMoney = playerMoney + (betAmount * 2);
         betAmount = 0;
         updateMoneyAndBet()
     }else if(dealerWon){
-        console.log('you lost, lose you bet');
         playerMoney = playerMoney;
         betAmount = 0;
         updateMoneyAndBet();
@@ -367,10 +370,23 @@ function updateMoneyAndBet(){
 
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
+    hideBetAndRound()
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
     if(playerMoney > 0){
         startGame();
     }else {alert('Oh no you ran out of money. Please click reset button to play again.')}
 };
+//hides bet and round buttons from player
+function hideBetAndRound(){
+    $('#bet').css('opacity', '0')
+    $('#next-round').css('opacity', '0')
+}
+//shows bet button and once bet clicked shows next round button
+function showBetAndRound(){
+    $('#bet').css('opacity', '1')
+    $('#bet').on('click', function(){
+        $('#next-round').css('opacity', '1')
+    })
 
+}
