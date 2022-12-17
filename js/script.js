@@ -3,7 +3,7 @@ const $dealerCard = $('#dCardOne');
 const $dealCardTwo = $('#dCardTwo');
 const $yourCardOne = $('#youCardOne');
 const $yourCardTwo = $('#youCardTwo');
-const $pEl = $('#you');
+
 //used to track player card value
 let playerValue;
 //used to track dealers card value.
@@ -126,9 +126,18 @@ function initialCard() {
 //used to check if player was dealt 21 on initial hand
 function playerDealtTwentyOne(){
     if(playerValue === 21){
-        alert('Congrats you were dealt Blackjack. Please click place bet button then next round');
-        showDealerCard();
-        showBetAndRound()
+        dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
+        $('#dealerCount').text('Dealer Count: '+dealerValue);
+        updateComputerGlobalCount(dealerValue);
+        if(playerValue === 21 && dealerValue === 21){
+            showBetAndRound();
+            $dealCardTwo.css('opacity', '1');
+            compareCounts()
+        }else if(playerValue === 21 && dealerValue !== 21){
+            showBetAndRound();
+            $dealCardTwo.css('opacity', '1');
+            compareCounts()
+        }
     }
 };
 
@@ -269,14 +278,7 @@ function showDealerCard(){
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     $('#dealerCount').text('Dealer Count: '+dealerValue);
     updateComputerGlobalCount(dealerValue);
-    if(dealerValue === 21){
-        tie = true;
-        endOfRound();
-    }else{
-        dealerWon = false;
-        playerWon = true;
-        endOfRound();
-    } dealerLogic();
+    dealerLogic();
 };
 
 //appends new img and sets img src value 
@@ -312,12 +314,10 @@ function dealerLogic(){
 //used to check if player or computer go over twenty one
 function overTwentyOne() {
     if(playerValue >= 22){
-        alert('Oh no you went over 21 and lost. Please click Bet button then next round');
         showBetAndRound()
         playerWon = false;
         dealerWon = true;
     }else if(dealerValue >= 22){
-        alert('Dealer went over 21. You Win! Please click Bet button then next round');
         showBetAndRound()
         dealerWon = false;
         playerWon = true;
@@ -342,7 +342,7 @@ function compareCounts(){
 //used to check at end of round if player has won/lost/tied and update players money
 function endOfRound(){
     if(tie){
-        playerMoney = playerMoney + betAmount;
+        playerMoney = playerMoney ;
         betAmount = 0;
         showWinLoseTie()
         updateMoneyAndBet();
@@ -371,7 +371,6 @@ function updateMoneyAndBet(){
     $('#player-money').text(`Amount Remaining: $${playerMoney}`);
 };
 
-
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
     hideBetAndRound()
@@ -381,20 +380,23 @@ function nextRound() {
         startGame();
     }else {alert('Oh no you ran out of money. Please click reset button to play again.')}
 };
+
 //hides bet and round buttons from player
 function hideBetAndRound(){
     $('#bet').css('opacity', '0')
     $('#next-round').css('opacity', '0')
-}
+};
+
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
     $('#bet').css('opacity', '1')
     $('#bet').on('click', function(){
+            $('#bet').css('opacity', '0')
         $('#next-round').css('opacity', '1')
     })
+};
 
-}
-
+//changes html element to disply if win/lose/tie
 function showWinLoseTie(){
     if(tie){
         $('.show-win').css({'opacity' : '1', 'color' : 'grey'})
@@ -406,4 +408,4 @@ function showWinLoseTie(){
         $('.show-win').css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'})
         $('.show-win').text('Oh no! You lost!')       
     }
-}
+};
