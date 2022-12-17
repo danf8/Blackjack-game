@@ -19,7 +19,7 @@
 * Click 'Stand' button to end drawing and dealer will play.
 * At end of round please click place 'Bet' button then click 'Next round' button
 
-Please click the LINKHERE to launch the deployed app
+Please click the [LINK](https://danf8.github.io/Blackjack-game/) to launch the deployed app
 
 ##Future Enhancements
 * Add mobile design
