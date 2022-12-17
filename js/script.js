@@ -40,7 +40,7 @@ $('#bet').on('click', function(){
     $('#bet').text('Click to Place Bet')
 });
 
-//after player clicks start button shows additonal playing buttons
+//after player clicks start button shows additonal playing buttons and remove start button from screen
 $('#start').on('click', function(){
     startGame()
     alert("Game Instructions: Click 'Hit' button to draw an additional card. Click 'Stand' button to end your turn and dealer will draw. At end of round please click 'Bet' then 'Next round' button ");
@@ -364,8 +364,8 @@ function updateMoneyAndBet(){
     $('#player-money').text(`Amount Remaining: $${playerMoney}`);
 };
 
-// $('#next-round').on('click',nextRound) can delete this line
-//when next round clicked removes previous cards and checks if player has enough money to continue to next round can delete this line
+
+//when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
