@@ -34,6 +34,7 @@ $('#enter-the-game').on('click', function(){
 
 //game display buttons to start game and update player bet and money
 $('#bet').on('click', function(){
+    $('.show-win').css('opacity', '0')
     placeBet();
     $('#reset').css('opacity', '1')
     $('#start').css('opacity', '1')
@@ -343,14 +344,17 @@ function endOfRound(){
     if(tie){
         playerMoney = playerMoney + betAmount;
         betAmount = 0;
+        showWinLoseTie()
         updateMoneyAndBet();
     }else if(playerWon){
         playerMoney = playerMoney + (betAmount * 2);
         betAmount = 0;
+        showWinLoseTie()
         updateMoneyAndBet()
     }else if(dealerWon){
         playerMoney = playerMoney;
         betAmount = 0;
+        showWinLoseTie()
         updateMoneyAndBet();
     }
 };
@@ -389,4 +393,17 @@ function showBetAndRound(){
         $('#next-round').css('opacity', '1')
     })
 
+}
+
+function showWinLoseTie(){
+    if(tie){
+        $('.show-win').css({'opacity' : '1', 'color' : 'grey'})
+        $('.show-win').text('It\'s a Tie')
+    }else if(playerWon){
+        $('.show-win').css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'})
+        $('.show-win').text('You\'ve won!')
+    }else if(dealerWon){
+        $('.show-win').css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'})
+        $('.show-win').text('Oh no! You lost!')       
+    }
 }
