@@ -68,12 +68,12 @@ $('#next-round').on('click',nextRound);
 //used to update global variable playerValue
 function updatePlayerGlobalCount(count){
     count = playerValue;
-}
+};
 
 //update global dealer count 
 function updateComputerGlobalCount(counter){
     counter = dealerValue;
-}
+};
 
 //used to retreive deck id for use in start game function
 function getDeckId() {
@@ -88,7 +88,7 @@ function getDeckId() {
             console.log('bad request');
         }
     )
-}
+};
 
 //used to draw starting cards from api and starts the game
 function startGame() {
@@ -118,7 +118,7 @@ function initialCard() {
     updatePlayerGlobalCount(playerValue);
     updateComputerGlobalCount(dealerValue);
     playerDealtTwentyOne();
-}
+};
 
 //used to check if player was dealt 21 on initial hand
 function playerDealtTwentyOne(){
@@ -126,7 +126,7 @@ function playerDealtTwentyOne(){
         alert('Congrats you were dealt Blackjack. Please click place bet button then next round');
         showDealerCard();
     }
-}
+};
 
 //when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
 function drawCard(){
@@ -144,7 +144,7 @@ function drawCard(){
             console.log('bad request');
         }
     )
-}
+};
 
 //adds card to screen when player clicks hit
 function appendCard(){
@@ -153,7 +153,7 @@ function appendCard(){
     $imgEl.attr('src', `${addCard.cards[0].image}`);
     checkAppendCard();
     updatePlayerCount();
-}
+};
 
 //used to change player count when new card is clicked
 function updatePlayerCount() {
@@ -162,7 +162,7 @@ function updatePlayerCount() {
     updatePlayerGlobalCount(playerValue);
     overTwentyOne();
     playerDealtTwentyOne();
-}
+};
 
 //checks starting cards values and assigns values for facecards
 function faceCardToNum(){
@@ -201,8 +201,9 @@ function faceCardToNum(){
             default:
                 startingCards.cards[i].value = startingCards.cards[i].value;
         }
-    };
-}
+    }
+};
+
 ////checks cards that are drawn after inital start, assigns values for facecards
 function checkAppendCard(){
     for(let i=0; i < addCard.cards.length; i++){
