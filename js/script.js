@@ -198,7 +198,7 @@ function faceCardToNum(){
                         if((playerValue + startingCards.cards[i].value) > 21 || (dealerValue + startingCards.cards[i].value) > 21 ){
                             if((playerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 1;
-                            }else if((dealerValue + astartingCards.cards[i].value) > 21){
+                            }else if((dealerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 1;
                             }
                         }else if ((playerValue + startingCards.cards[i].value) < 21 || (dealerValue + startingCards.cards[i].value) < 21){
