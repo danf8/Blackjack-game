@@ -29,17 +29,16 @@ main{
     grid-area: win;
     text-align: center;
     opacity: 0;
-
 }
 
 #dealer{
     grid-area: dealer;
 }
 
-#dCardOne{
+#D-card-one{
     text-align: center;
 }
-#dCardTwo{
+#D-card-two{
     display: inline!important;
 }
 .added-card{
@@ -49,11 +48,11 @@ main{
     grid-area: you;
 }
 
-#youCardOne{
+#You-card-one{
     text-align:center;
 }
 
-#youCardTwo{
+#You-card-two{
     text-align: right;
 }
 
@@ -79,7 +78,7 @@ button {
 #bet{
     opacity: 1;
 }
-    /* used for showing dealer card two when player clicks stand */
+
 .show{
     text-align: right;
     opacity: 0;

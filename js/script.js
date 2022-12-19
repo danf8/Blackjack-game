@@ -1,8 +1,8 @@
 
-const $dealerCard = $('#dCardOne');
-const $dealCardTwo = $('#dCardTwo');
-const $yourCardOne = $('#youCardOne');
-const $yourCardTwo = $('#youCardTwo');
+const $dealerCard = $('#D-card-one');
+const $dealCardTwo = $('#D-card-two');
+const $yourCardOne = $('#You-card-one');
+const $yourCardTwo = $('#You-card-two');
 
 //used to track player card value
 let playerValue;
@@ -115,9 +115,9 @@ function initialCard() {
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
     faceCardToNum();
     dealerValue = Number(startingCards.cards[0].value);
-    $('#dealerCount').text('Dealer Count: '+dealerValue);
+    $('#Dealer-count').text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
-    $('#playerCount').text('Player Count: '+playerValue);
+    $('#Player-count').text('Player Count: '+playerValue);
     updatePlayerGlobalCount(playerValue);
     updateComputerGlobalCount(dealerValue);
     playerDealtTwentyOne();
@@ -127,7 +127,7 @@ function initialCard() {
 function playerDealtTwentyOne(){
     if(playerValue === 21){
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-        $('#dealerCount').text('Dealer Count: '+dealerValue);
+        $('#Dealer-count').text('Dealer Count: '+dealerValue);
         updateComputerGlobalCount(dealerValue);
         if(playerValue === 21 && dealerValue === 21){
             showBetAndRound();
@@ -171,7 +171,7 @@ function appendCard(){
 //used to change player count when new card is clicked
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value );
-    $('#playerCount').text('Player Count: '+playerValue);
+    $('#Player-count').text('Player Count: '+playerValue);
     updatePlayerGlobalCount(playerValue);
     overTwentyOne();
     playerDealtTwentyOne();
@@ -276,7 +276,7 @@ function dealerPlay(){
 function showDealerCard(){
     $dealCardTwo.css('opacity', '1');
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-    $('#dealerCount').text('Dealer Count: '+dealerValue);
+    $('#Dealer-count').text('Dealer Count: '+dealerValue);
     updateComputerGlobalCount(dealerValue);
     dealerLogic();
 };
@@ -288,7 +288,7 @@ function addDealerCard(){
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`);
     checkAppendCard();
     dealerValue = dealerValue + Number(addCard.cards[0].value);
-    $('#dealerCount').text('Dealer Count: '+dealerValue);
+    $('#Dealer-count').text('Dealer Count: '+dealerValue);
     updateComputerGlobalCount(dealerValue);
 };
 
