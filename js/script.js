@@ -3,7 +3,6 @@ const $dealerCard = $('#D-card-one');
 const $dealCardTwo = $('#D-card-two');
 const $yourCardOne = $('#You-card-one');
 const $yourCardTwo = $('#You-card-two');
-
 //used to track player card value
 let playerValue;
 //used to track dealers card value.
@@ -21,17 +20,14 @@ let betAmount = 0;
 let dealerWon;
 let playerWon;
 let tie;
-
 //sets image width
 $('img').css({"width" : "126", "height" : "214"});
-
 //used to remove current background and get player to table/game calls getDeckId function
 $('#enter-the-game').on('click', function(){
      $('#enter-the-game').fadeOut(900)
     $('div').fadeOut(900)
     getDeckId()
 });
-
 //game display buttons to start game and update player bet and money
 $('#bet').on('click', function(){
     $('.show-win').css('opacity', '0')
@@ -40,7 +36,6 @@ $('#bet').on('click', function(){
     $('#start').css('opacity', '1')
     $('#bet').text('Click to Place Bet')
 });
-
 //after player clicks start button shows additonal playing buttons and remove start button from screen
 $('#start').on('click', function(){
     startGame()
@@ -50,34 +45,27 @@ $('#start').on('click', function(){
     $('#start').remove()
     hideBetAndRound()
 });
-
 //used to reset game board
 $('#reset').on('click', function(){
     location.reload();
 });
-
 //when click on hit button will draw new card for player and dispaly on screen
 $('#hit').on('click', drawCard);
-
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
 $('#stand').on('click', function(){
     showBetAndRound()
     dealerPlay()
 });
-
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 $('#next-round').on('click',nextRound);
-
 //used to update global variable playerValue
 function updatePlayerGlobalCount(count){
     count = playerValue;
 };
-
 //update global dealer count 
 function updateComputerGlobalCount(counter){
     counter = dealerValue;
 };
-
 //used to retreive deck id for use in start game function
 function getDeckId() {
     $.ajax({
@@ -92,7 +80,6 @@ function getDeckId() {
         }
     )
 };
-
 //used to draw starting cards from api and starts the game
 function startGame() {
     $.ajax({
@@ -125,7 +112,6 @@ function initialCard() {
     updateComputerGlobalCount(dealerValue);
     playerDealtTwentyOne();
 };
-
 //used to check if player was dealt 21 on initial hand
 function playerDealtTwentyOne(){
     if(playerValue === 21){
@@ -143,7 +129,6 @@ function playerDealtTwentyOne(){
         }
     }
 };
-
 //when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
 function drawCard(){
     $.ajax({
@@ -151,6 +136,9 @@ function drawCard(){
     }).then(
         (data) => {
             addCard = data;
+            dealerWon = 0;
+            playerWon = 0;
+            tie = 0;
             appendCard();
         },
         (error) => {
@@ -158,7 +146,6 @@ function drawCard(){
         }
     )
 };
-
 //adds card to screen when player clicks hit
 function appendCard(){
     const $imgEl = $(`<img class="added-card" width="126" height="214">`);
@@ -167,7 +154,6 @@ function appendCard(){
     checkAppendCard();
     updatePlayerCount();
 };
-
 //used to change player count when new card is clicked
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value );
@@ -176,7 +162,6 @@ function updatePlayerCount() {
     overTwentyOne();
     playerDealtTwentyOne();
 };
-
 //checks starting cards values and assigns values for facecards
 function faceCardToNum(){
     for(let i=0; i < startingCards.cards.length; i++){
@@ -201,10 +186,10 @@ function faceCardToNum(){
                             }else if((dealerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 1;
                             }
-                        }else if ((playerValue + startingCards.cards[i].value) <= 21 || (dealerValue + startingCards.cards[i].value) <= 21){
-                            if((playerValue + startingCards.cards[i].value) <= 21){
+                        }else if ((playerValue + startingCards.cards[i].value) < 21 || (dealerValue + startingCards.cards[i].value) < 21){
+                            if((playerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 11;
-                            }else if((dealerValue + startingCards.cards[i].value) <= 21){
+                            }else if((dealerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 11;
                             }
                         }
@@ -216,8 +201,6 @@ function faceCardToNum(){
         }
     }
 };
-//circle back and check if the first ace should be 1 or 11
-
 ////checks cards that are drawn after inital start, assigns values for facecards
 function checkAppendCard(){
     for(let i=0; i < addCard.cards.length; i++){
@@ -242,10 +225,10 @@ function checkAppendCard(){
                             }else if((dealerValue + addCard.cards[i].value) > 21){
                                 addCard.cards[i].value = 1;
                             }
-                        }else if ((playerValue + addCard.cards[i].value) <= 21 || (dealerValue + addCard.cards[i].value) <= 21){
-                            if((playerValue + addCard.cards[i].value) <= 21){
+                        }else if ((playerValue + addCard.cards[i].value) < 21 || (dealerValue + addCard.cards[i].value) < 21){
+                            if((playerValue + addCard.cards[i].value) > 21){
                                 addCard.cards[i].value = 11;
-                            }else if((dealerValue + addCard.cards[i].value) <= 21){
+                            }else if((dealerValue + addCard.cards[i].value) > 21){
                                 addCard.cards[i].value = 11;
                             }
                         }
@@ -257,7 +240,6 @@ function checkAppendCard(){
         }
     }
 };
-
 //allows dealer to draw new cards and calls function to display facedown card
 function dealerPlay(){
     $.ajax({
@@ -272,7 +254,6 @@ function dealerPlay(){
         }
     )
 };
-
 //shows dealer card, dealer count and checks if dealer value is 21 which is used in playerDealtTwentyOne function above
 function showDealerCard(){
     $dealCardTwo.css('opacity', '1');
@@ -281,7 +262,6 @@ function showDealerCard(){
     updateComputerGlobalCount(dealerValue);
     dealerLogic();
 };
-
 //appends new img and sets img src value 
 function addDealerCard(){
     const $dealerImgEl = $('<img class="added-card" width="126" height="214">');
@@ -292,7 +272,6 @@ function addDealerCard(){
     $('#Dealer-count').text('Dealer Count: '+dealerValue);
     updateComputerGlobalCount(dealerValue);
 };
-
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
     while(dealerValue <= 21){
@@ -311,7 +290,6 @@ function dealerLogic(){
     }
 }if(dealerValue >=22){overTwentyOne()}
 };
-
 //used to check if player or computer go over twenty one
 function overTwentyOne() {
     if(playerValue >= 22){
@@ -324,7 +302,6 @@ function overTwentyOne() {
         playerWon = true;
     }endOfRound();
 };
-
 //calculates who is closer to 21 and sets correct variable to true or false
 function compareCounts(){
     let compareDealer = 21 - dealerValue;
@@ -339,7 +316,6 @@ function compareCounts(){
         playerWon = false;
     }endOfRound();
 };
-
 //used to check at end of round if player has won/lost/tied and update players money
 function endOfRound(){
     if(tie){
@@ -359,19 +335,16 @@ function endOfRound(){
         updateMoneyAndBet();
     }
 };
-
 //updates player bet and player money, called when bet button is
 function placeBet(){
     betAmount = 10;
     playerMoney = playerMoney - betAmount;
     updateMoneyAndBet();
 };
-
 function updateMoneyAndBet(){
     $('#amount-bet').text(`Betting: $${betAmount}`);
     $('#player-money').text(`Amount Remaining: $${playerMoney}`);
 };
-
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
     hideBetAndRound()
@@ -381,13 +354,11 @@ function nextRound() {
         startGame();
     }else {alert('Oh no you ran out of money. Please click reset button to play again.')}
 };
-
 //hides bet and round buttons from player
 function hideBetAndRound(){
     $('#bet').css('opacity', '0')
     $('#next-round').css('opacity', '0')
 };
-
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
     $('#bet').css('opacity', '1')
@@ -396,7 +367,6 @@ function showBetAndRound(){
         $('#next-round').css('opacity', '1')
     })
 };
-
 //changes html element to disply if win/lose/tie
 function showWinLoseTie(){
     if(tie){
