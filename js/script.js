@@ -201,10 +201,10 @@ function faceCardToNum(){
                             }else if((dealerValue + startingCards.cards[i].value) > 21){
                                 startingCards.cards[i].value = 1;
                             }
-                        }else if ((playerValue + startingCards.cards[i].value) < 21 || (dealerValue + startingCards.cards[i].value) < 21){
-                            if((playerValue + startingCards.cards[i].value) > 21){
+                        }else if ((playerValue + startingCards.cards[i].value) <= 21 || (dealerValue + startingCards.cards[i].value) <= 21){
+                            if((playerValue + startingCards.cards[i].value) <= 21){
                                 startingCards.cards[i].value = 11;
-                            }else if((dealerValue + startingCards.cards[i].value) > 21){
+                            }else if((dealerValue + startingCards.cards[i].value) <= 21){
                                 startingCards.cards[i].value = 11;
                             }
                         }
@@ -216,6 +216,7 @@ function faceCardToNum(){
         }
     }
 };
+//circle back and check if the first ace should be 1 or 11
 
 ////checks cards that are drawn after inital start, assigns values for facecards
 function checkAppendCard(){
@@ -241,10 +242,10 @@ function checkAppendCard(){
                             }else if((dealerValue + addCard.cards[i].value) > 21){
                                 addCard.cards[i].value = 1;
                             }
-                        }else if ((playerValue + addCard.cards[i].value) < 21 || (dealerValue + addCard.cards[i].value) < 21){
-                            if((playerValue + addCard.cards[i].value) > 21){
+                        }else if ((playerValue + addCard.cards[i].value) <= 21 || (dealerValue + addCard.cards[i].value) <= 21){
+                            if((playerValue + addCard.cards[i].value) <= 21){
                                 addCard.cards[i].value = 11;
-                            }else if((dealerValue + addCard.cards[i].value) > 21){
+                            }else if((dealerValue + addCard.cards[i].value) <= 21){
                                 addCard.cards[i].value = 11;
                             }
                         }
