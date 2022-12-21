@@ -22,7 +22,7 @@ let dealerWon;
 let playerWon;
 let tie;
 
-//sets image width
+
 $('img').css({"width" : "126", "height" : "214"});
 //used to remove current background and get player to table/game calls getDeckId function
 
