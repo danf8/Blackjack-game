@@ -152,9 +152,6 @@ function drawCard(){
     }).then(
         (data) => {
             addCard = data;
-            dealerWon = 0;
-            playerWon = 0;
-            tie = 0;
             appendCard();
         },
         (error) => {
