@@ -20,6 +20,11 @@ main{
     opacity: 0;
 }
 
+img {
+    width: 126px;
+    height: 214px;
+}
+
 #title{
     color: white;
     grid-area: header;
