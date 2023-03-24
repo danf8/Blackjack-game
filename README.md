@@ -1,8 +1,8 @@
-#<u>Blackjack Game</u>
+# <u>Blackjack Game</u>
 
 ###  <sub>A web application that allows the user to play the casino game Blackjack utilzing the Card Deck API.<sub>
 
-##Technologies Used
+## Technologies Used
 
 1. JavaScript
 2. CSS3
@@ -10,10 +10,10 @@
 4. jQuery
 5. Card Deck API
 
-##ScreenShots
+## ScreenShots
 ![Blackjack screenshot](Blackjack1.png)
 
-##Playing the Game
+## Playing the Game
 * Instructions once game has begun: 
     * Click 'Hit' button to draw an additional card
     * Click 'Stand' button to end drawing and dealer will play.
@@ -21,6 +21,6 @@
 
 Please click the [LINK](https://danf8.github.io/Blackjack-game/) to launch the deployed app
 
-##Future Enhancements
+## Future Enhancements
 * Add mobile design
 * Add additional betting amounts
