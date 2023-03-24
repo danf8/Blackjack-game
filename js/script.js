@@ -37,49 +37,51 @@ let dealerWon;
 let playerWon;
 let tie;
 
-//used to remove current background and get player to table/game calls getDeckId function
-
-$($enterGame).on('click', function(){
-     $($enterGame).fadeOut(900)
-    $($divElement).fadeOut(900)
-    getDeckId()
-});
-
-//game display buttons to start game and update player bet and money
-$($bet).on('click', function(){
-    $($showWin).css('opacity', '0')
-    placeBet();
-    $($resetElement).css('opacity', '1')
-    $($startElement).css('opacity', '1')
-    $($bet).text('Click to Place Bet')
-});
-
-//after player clicks start button shows additonal playing buttons and remove start button from screen
-$($startElement).on('click', function(){
-    startGame()
-    alert("Game Instructions: Click 'Hit' button to draw an additional card. Click 'Stand' button to end your turn and dealer will draw. At end of round please click 'Bet' then 'Next round' button ");
-    $($mainElement).css('opacity', '1')
-    $($buttonElement).css('opacity', '1')
-    $($startElement).remove()
-    hideBetAndRound()
-});
-
-//used to reset game board
-$($resetElement).on('click', function(){
-    location.reload();
-});
-
-//when click on hit button will draw new card for player and dispaly on screen
+//Event listeners
+$($enterGame).on('click', enterGameBoard);
+$($bet).on('click', clickOnBet);
+$($startElement).on('click', clickOnStart);
+$($resetElement).on('click', resetGame);
 $($hitElement).on('click', drawCard);
+$($standElement).on('click', clickOnStand);
+$($nextRoundElement).on('click',nextRound);
 
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
-$($standElement).on('click', function(){
-    showBetAndRound()
-    dealerPlay()
-});
+function clickOnStand() {
+    showBetAndRound();
+    dealerPlay();
+};
 
-//when next round clicked removes previous cards and checks if player has enough money to continue to next round
-$($nextRoundElement).on('click',nextRound);
+//game display buttons to start game and update player bet and money
+function clickOnBet() {
+    $($showWin).css('opacity', '0');
+    placeBet();
+    $($resetElement).css('opacity', '1');
+    $($startElement).css('opacity', '1');
+    $($bet).text('Click to Place Bet');
+};
+
+//after player clicks start button shows additonal playing buttons and remove start button from screen
+function clickOnStart() {
+    startGame();
+    alert("Game Instructions: Click 'Hit' button to draw an additional card. Click 'Stand' button to end your turn and dealer will draw. At end of round please click 'Bet' then 'Next round' button ");
+    $($mainElement).css('opacity', '1');
+    $($buttonElement).css('opacity', '1');
+    $($startElement).remove();
+    hideBetAndRound();
+};
+
+//used to remove current background and get player to table/game calls getDeckId function
+function enterGameBoard() {
+    $($enterGame).fadeOut(900);
+    $($divElement).fadeOut(900);
+    getDeckId();
+};
+
+//used to reset game 
+function resetGame() {
+    location.reload();
+};
 
 //used to update global variable playerValue
 function updatePlayerGlobalCount(count){
@@ -358,17 +360,17 @@ function endOfRound(){
     if(tie){
         playerMoney = playerMoney ;
         betAmount = 0;
-        showWinLoseTie()
+        showWinLoseTie();
         updateMoneyAndBet();
     }else if(playerWon){
         playerMoney = playerMoney + (betAmount * 2);
         betAmount = 0;
-        showWinLoseTie()
-        updateMoneyAndBet()
+        showWinLoseTie();
+        updateMoneyAndBet();
     }else if(dealerWon){
         playerMoney = playerMoney;
         betAmount = 0;
-        showWinLoseTie()
+        showWinLoseTie();
         updateMoneyAndBet();
     }
 };
@@ -387,40 +389,42 @@ function updateMoneyAndBet(){
 
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
-    hideBetAndRound()
+    hideBetAndRound();
     //reference element added-card to remove from gameboard 
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
     if(playerMoney > 0){
         startGame();
-    }else {alert('Oh no you ran out of money. Please click reset button to play again.')}
+    }else {
+        alert('Oh no you ran out of money. Please click reset button to play again.');
+    }
 };
 
 //hides bet and round buttons from player
 function hideBetAndRound(){
-    $($bet).css('opacity', '0')
-    $($nextRoundElement).css('opacity', '0')
+    $($bet).css('opacity', '0');
+    $($nextRoundElement).css('opacity', '0');
 };
 
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
-    $($bet).css('opacity', '1')
+    $($bet).css('opacity', '1');
     $($bet).on('click', function(){
-            $($bet).css('opacity', '0')
-        $($nextRoundElement).css('opacity', '1')
-    })
+        $($bet).css('opacity', '0');
+        $($nextRoundElement).css('opacity', '1');
+    });
 };
 
 //changes html element to disply if win/lose/tie
 function showWinLoseTie(){
     if(tie){
-        $($showWin).css({'opacity' : '1', 'color' : 'grey'})
-        $($showWin).text('It\'s a Tie')
+        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
+        $($showWin).text('It\'s a Tie');
     }else if(playerWon){
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'})
-        $($showWin).text('You\'ve won!')
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $($showWin).text('You\'ve won!');
     }else if(dealerWon){
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'})
-        $($showWin).text('Oh no! You lost!')       
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+        $($showWin).text('Oh no! You lost!');       
     }
 };
