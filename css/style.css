@@ -80,8 +80,47 @@ button {
     border-radius: 45%;
     margin-bottom: 5px!important;
 }
+
+#help {
+    background-color: #efefef;
+    opacity: 0;
+    color: black;
+    margin: 0 0 5px;
+ }
+
+.modal a.close-modal {
+    border: none;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+}
+
+ .modal {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 250px;
+    height: 250px;
+    text-align: center;
+    color: #fff;
+    line-height: 1.25;
+    text-decoration: none;
+    text-indent: 0;
+    background: grey;
+    border: 2px solid #fff;
+    border-radius: 2px;
+    -webkit-border-radius:  2px;
+    -moz-border-radius:     2px;
+    -o-border-radius:       2px;
+    -ms-border-radius:      2px;
+    box-shadow:         1px 1px 5px rgba(0,0,0,0.5);
+    -moz-box-shadow:    1px 1px 5px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
 #bet{
-    opacity: 1;
+    opacity: 0;
 }
 
 .show{
@@ -89,22 +128,14 @@ button {
     opacity: 0;
 }
 
-div{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    text-align: center;
-    background-image: url('https://images.pexels.com/photos/7594313/pexels-photo-7594313.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-    background-size: cover;
-}
-
 #enter-the-game{
-    position: absolute;
     opacity: 1;
-    top: 200px;
 }
 
 #amount-bet{
     color: rgb(240, 11, 11);
 }
+
+
+
+
