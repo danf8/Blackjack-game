@@ -18,6 +18,7 @@ const $divElement = $('div');
 const $resetElement = $('#reset');
 const $hitElement = $('#hit');
 const $standElement = $('#stand');
+const $helpElement = $('#help');
 
 //used to track player card value
 let playerValue;
@@ -52,6 +53,7 @@ function clickOnStand() {
     dealerPlay();
 };
 
+
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
     $($showWin).css('opacity', '0');
@@ -64,7 +66,7 @@ function clickOnBet() {
 //after player clicks start button shows additonal playing buttons and remove start button from screen
 function clickOnStart() {
     startGame();
-    alert("Game Instructions: Click 'Hit' button to draw an additional card. Click 'Stand' button to end your turn and dealer will draw. At end of round please click 'Bet' then 'Next round' button ");
+    $($helpElement).css('opacity', '1');
     $($mainElement).css('opacity', '1');
     $($buttonElement).css('opacity', '1');
     $($startElement).remove();
@@ -73,8 +75,8 @@ function clickOnStart() {
 
 //used to remove current background and get player to table/game calls getDeckId function
 function enterGameBoard() {
-    $($enterGame).fadeOut(900);
-    $($divElement).fadeOut(900);
+    $($bet).css('opacity', '1')
+    $($enterGame).fadeOut(300);
     getDeckId();
 };
 
