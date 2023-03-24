@@ -53,7 +53,6 @@ function clickOnStand() {
     dealerPlay();
 };
 
-
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
     $($showWin).css('opacity', '0');
@@ -65,7 +64,6 @@ function clickOnBet() {
 
 //after player clicks start button shows additonal playing buttons and remove start button from screen
 function clickOnStart() {
-    startGame();
     $($helpElement).css('opacity', '1');
     $($mainElement).css('opacity', '1');
     $($buttonElement).css('opacity', '1');
@@ -95,37 +93,26 @@ function updateComputerGlobalCount(counter){
     counter = dealerValue;
 };
 
-//used to retreive deck id for use in start game function
-function getDeckId() {
-    $.ajax({
-        url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
-    }).then(
-        (data) => {
-            //used to set deck id in drawCards URL
-            deckId = data.deck_id;
-        },
-        (error) => {
-            console.log('bad request');
+// checks if deckId is already set, then draws inital cards.
+async function getDeckId() {
+    try {
+        if(!deckId){
+        const response = await $.ajax({
+            url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
+        });
+        deckId = response.deck_id;
         }
-    )
-};
-
-//used to draw starting cards from api and starts the game
-function startGame() {
-    $.ajax({
-        url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
-    }).then(
-        (data) => {
-            startingCards = data;
+        const drawResponse = await $.ajax({
+            url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
+        });
+        startingCards = drawResponse;
             dealerWon = 0;
             playerWon = 0;
             tie = 0;
             initialCard();
-        },
-        (error) => {
-            console.log('bad request');
-        }
-    )
+    } catch (error) {
+        console.log('bad request', error);
+    }
 };
 
 //sets and initial card images and count for game
@@ -396,7 +383,7 @@ function nextRound() {
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
     if(playerMoney > 0){
-        startGame();
+        getDeckId()
     }else {
         alert('Oh no you ran out of money. Please click reset button to play again.');
     }
