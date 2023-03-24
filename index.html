@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <script defer src="./js/script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <link rel="stylesheet" href="./css/style.css">
     <title>Blackjack</title>
     <link
@@ -18,6 +20,7 @@
 <body>
     <h1 id="title">BlackJack</h1>
         <h2 class="show-win"></h2>
+        <span class="modal" id="popup">Game Instructions: Click 'Hit' button to draw an additional card. Click 'Stand' button to end your turn and dealer will draw. At end of round please click 'Bet' then 'Next round' button</span>
     <main>
         <p id="dealer">Dealer Cards</p>
             <img id="D-card-one">
@@ -26,17 +29,16 @@
             <img id="You-card-one">
             <img id="You-card-two">
     </main>
-    <div>
-        <button id="enter-the-game" class="btn btn-primary ">Click Here to Enter</button>
-    </div>
     <aside id="sidebar">
         <p id="Dealer-count" class="game-stats"></p>
         <p id="amount-bet" class="game-stats"></p>
         <p id="Player-count" class="game-stats"></p>
         <p id="player-money" class="game-stats"></p>
-        <button id="bet" class="btn btn-outline-primary">Click to Place Bet and Begin</button>        
+        <button id="enter-the-game" class="btn btn-outline-primary ">Click Here to Enter</button>
+        <button id="bet" class="btn btn-outline-primary">Click to Place Bet and Begin</button>
         <button id="start" class="btn btn-outline-secondary">Start</button>
         <button id="next-round" class="win-or-lose btn btn-outline-secondary">Next Round</button>
+        <a id="help" class="btn btn-outline-secondary" href="#popup" rel="modal:open">Help</a>
         <button id="reset" class="btn btn-secondary">Reset</button>
         <button id="hit" class="win-or-lose btn btn-outline-secondary">Hit</button>
         <button id="stand" class="win-or-lose btn btn-outline-secondary">Stand</button>
