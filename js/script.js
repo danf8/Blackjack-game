@@ -50,11 +50,11 @@ $($nextRoundElement).on('click',nextRound);
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
 function clickOnStand() {
     showBetAndRound();
-    dealerPlay();
+    getDeckId(1, 'dealer')
 };
 // when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
 function drawCard() {
-    getDeckId(1)
+    getDeckId(1 , 'player')
 }
 
 //game display buttons to start game and update player bet and money
@@ -101,30 +101,30 @@ function updateComputerGlobalCount(counter){
 async function getDeckId(num, param2) {
     try {
         if(!deckId && num === 6){
-        const response = await $.ajax({
-            url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
-        });
-        deckId = response.deck_id;
+            const response = await $.ajax({
+                url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
+            });
+            deckId = response.deck_id;
         };
         if(num === 4 || param2 === 'begin'){
-        const drawResponse = await $.ajax({
-            url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
-        });
-        startingCards = drawResponse;
-            dealerWon = 0;
-            playerWon = 0;
-            tie = 0;
-            initialCard();
-        }
+            const drawResponse = await $.ajax({
+                url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
+            });
+                startingCards = drawResponse;
+                dealerWon = 0;
+                playerWon = 0;
+                tie = 0;
+                initialCard();
+        };
         if(num ===1){
-        const drawCards = await $.ajax({
-            url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
-        })
-        addCard = drawCards;
-        appendCard();
-        }
-    } catch (error) {
-        console.log('bad request', error);
+            const drawCards = await $.ajax({
+                url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
+            })
+            addCard = drawCards;
+            param2 === 'player' ? appendCard() : showDealerCard();
+        };
+        } catch (error) {
+            console.log('bad request', error);
     }
 };
 
@@ -258,21 +258,6 @@ function checkAppendCard(){
                 addCard.cards[i].value = addCard.cards[i].value;
         }
     }
-};
-
-//allows dealer to draw new cards and calls function to display facedown card
-function dealerPlay(){
-    $.ajax({
-        url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
-    }).then(
-        (data) => {
-            addCard = data;
-            showDealerCard();
-        },
-        (error) => {
-            console.log('Bad request');
-        }
-    )
 };
 
 //shows dealer card, dealer count and checks if dealer value is 21 which is used in playerDealtTwentyOne function above
