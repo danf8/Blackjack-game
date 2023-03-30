@@ -101,7 +101,7 @@ async function getDeckId() {
             url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
         });
         deckId = response.deck_id;
-        }
+        };
         const drawResponse = await $.ajax({
             url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
         });
@@ -349,17 +349,23 @@ function endOfRound(){
     if(tie){
         playerMoney = playerMoney ;
         betAmount = 0;
-        showWinLoseTie();
+        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
+        $($showWin).text('It\'s a Tie');
+        // showWinLoseTie();
         updateMoneyAndBet();
     }else if(playerWon){
         playerMoney = playerMoney + (betAmount * 2);
         betAmount = 0;
-        showWinLoseTie();
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $($showWin).text('You\'ve won!');
+        // showWinLoseTie();
         updateMoneyAndBet();
     }else if(dealerWon){
         playerMoney = playerMoney;
         betAmount = 0;
-        showWinLoseTie();
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+        $($showWin).text('Oh no! You lost!');  
+        // showWinLoseTie();
         updateMoneyAndBet();
     }
 };
@@ -405,15 +411,15 @@ function showBetAndRound(){
 };
 
 //changes html element to disply if win/lose/tie
-function showWinLoseTie(){
-    if(tie){
-        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
-        $($showWin).text('It\'s a Tie');
-    }else if(playerWon){
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $($showWin).text('You\'ve won!');
-    }else if(dealerWon){
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-        $($showWin).text('Oh no! You lost!');       
-    }
-};
+// function showWinLoseTie(){
+//     if(tie){
+//         $($showWin).css({'opacity' : '1', 'color' : 'grey'});
+//         $($showWin).text('It\'s a Tie');
+//     }else if(playerWon){
+//         $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+//         $($showWin).text('You\'ve won!');
+//     }else if(dealerWon){
+//         $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+//         $($showWin).text('Oh no! You lost!');       
+//     }
+// };
