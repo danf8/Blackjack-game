@@ -87,14 +87,10 @@ function resetGame() {
     location.reload();
 };
 
-//used to update global variable playerValue
-function updatePlayerGlobalCount(count){
-    count = playerValue;
-};
-
-//update global dealer count 
-function updateComputerGlobalCount(counter){
-    counter = dealerValue;
+//used to update global variable for player and dealer value
+function updatePlayerGlobalCount(count, param1){
+    param1 === 'player' ? count = playerValue : count = dealerValue;
+    // count = playerValue;
 };
 
 // checks if deckId is already set, then draws inital cards.
@@ -119,7 +115,7 @@ async function getDeckId(num, param2) {
         if(num ===1){
             const drawCards = await $.ajax({
                 url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
-            })
+            });
             addCard = drawCards;
             param2 === 'player' ? appendCard() : showDealerCard();
         };
@@ -139,8 +135,6 @@ function initialCard() {
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $($playerCountElement).text('Player Count: '+playerValue);
-    updatePlayerGlobalCount(playerValue);
-    updateComputerGlobalCount(dealerValue);
     playerDealtTwentyOne();
 };
 
@@ -149,7 +143,7 @@ function playerDealtTwentyOne(){
     if(playerValue === 21){
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
         $($dealerCountElement).text('Dealer Count: '+dealerValue);
-        updateComputerGlobalCount(dealerValue);
+        updatePlayerGlobalCount(dealerValue, 'computer');
         if(playerValue === 21 && dealerValue === 21){
             showBetAndRound();
             $dealCardTwo.css('opacity', '1');
@@ -175,7 +169,7 @@ function appendCard(){
 function updatePlayerCount() {
     playerValue = playerValue + Number(addCard.cards[0].value );
     $($playerCountElement).text('Player Count: '+playerValue);
-    updatePlayerGlobalCount(playerValue);
+    updatePlayerGlobalCount(playerValue, 'player');
     overTwentyOne();
     playerDealtTwentyOne();
 };
@@ -265,7 +259,7 @@ function showDealerCard(){
     $dealCardTwo.css('opacity', '1');
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
-    updateComputerGlobalCount(dealerValue);
+    updatePlayerGlobalCount(dealerValue, 'computer');
     dealerLogic();
 };
 
@@ -277,13 +271,13 @@ function addDealerCard(){
     checkAppendCard();
     dealerValue = dealerValue + Number(addCard.cards[0].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
-    updateComputerGlobalCount(dealerValue);
+    updatePlayerGlobalCount(dealerValue, 'computer');
 };
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
     while(dealerValue <= 21){
-        updateComputerGlobalCount(dealerValue);
+        updatePlayerGlobalCount(dealerValue, 'computer');
     if(dealerValue === 21){
         compareCounts();
         break;
