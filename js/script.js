@@ -73,13 +73,14 @@ function clickOnStart() {
     $($buttonElement).css('opacity', '1');
     $($startElement).remove();
     hideBetAndRound();
+    getDeckId(4, 'begin')
 };
 
 //used to remove current background and get player to table/game calls getDeckId function
 function enterGameBoard() {
     $($bet).css('opacity', '1')
     $($enterGame).fadeOut(300);
-    getDeckId(6, 'begin');
+    getDeckId(6);
 };
 
 //used to reset game 
@@ -182,25 +183,11 @@ function faceCardToNum(cardsToCheck){
                 cardsToCheck.cards[i].value = 10;
                 break;
             case 'ACE':
-                checkStartAce()
-                function checkStartAce(){
-                    if(cardsToCheck.cards[i].value === "ACE"){
-                        cardsToCheck.cards[i].value = 11;
-                        if((playerValue + cardsToCheck.cards[i].value) > 21 || (dealerValue + cardsToCheck.cards[i].value) > 21 ){
-                            if((playerValue + cardsToCheck.cards[i].value) > 21){
-                                cardsToCheck.cards[i].value = 1;
-                            }else if((dealerValue + cardsToCheck.cards[i].value) > 21){
-                                cardsToCheck.cards[i].value = 1;
-                            }
-                        }else if ((playerValue + cardsToCheck.cards[i].value) < 21 || (dealerValue + cardsToCheck.cards[i].value) < 21){
-                            if((playerValue + cardsToCheck.cards[i].value) > 21){
-                                cardsToCheck.cards[i].value = 11;
-                            }else if((dealerValue + cardsToCheck.cards[i].value) > 21){
-                                cardsToCheck.cards[i].value = 11;
-                            }
-                        }
-                    }
-                }
+                cardsToCheck.cards[i].value = 11;
+                let checkValue = playerValue + cardsToCheck.cards[i].value;
+                let checkDealerValue = dealerValue + cardsToCheck.cards[i].value;
+                checkValue > 21 ? cardsToCheck.cards[i].value === 1 : cardsToCheck.cards[i].value === 11;
+                checkDealerValue > 21 ? cardsToCheck.cards[i].value === 1 : cardsToCheck.cards[i].value === 11;
                 break;
             default:
                 cardsToCheck.cards[i].value = cardsToCheck.cards[i].value;
