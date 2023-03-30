@@ -50,17 +50,20 @@ $($nextRoundElement).on('click',nextRound);
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
 function clickOnStand() {
     showBetAndRound();
-    getDeckId(1, 'dealer')
+    getDeckId(1, 'dealer');
 };
+
 // when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
 function drawCard() {
-    getDeckId(1 , 'player')
-}
+    getDeckId(1 , 'player');
+};
 
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
+    betAmount = 10;
+    playerMoney = playerMoney - betAmount;
+    updateMoneyAndBet();
     $($showWin).css('opacity', '0');
-    placeBet();
     $($resetElement).css('opacity', '1');
     $($startElement).css('opacity', '1');
     $($bet).text('Click to Place Bet');
@@ -73,12 +76,12 @@ function clickOnStart() {
     $($buttonElement).css('opacity', '1');
     $($startElement).remove();
     hideBetAndRound();
-    getDeckId(4, 'begin')
+    getDeckId(4, 'begin');
 };
 
 //used to remove current background and get player to table/game calls getDeckId function
 function enterGameBoard() {
-    $($bet).css('opacity', '1')
+    $($bet).css('opacity', '1');
     $($enterGame).fadeOut(300);
     getDeckId(6);
 };
@@ -98,13 +101,13 @@ async function getDeckId(num, param2) {
     try {
         if(!deckId && num === 6){
             const response = await $.ajax({
-                url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
+                url: 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6'
             });
             deckId = response.deck_id;
         };
         if(num === 4 || param2 === 'begin'){
             const drawResponse = await $.ajax({
-                url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
+                url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=4'
             });
                 startingCards = drawResponse;
                 dealerWon = 0;
@@ -112,9 +115,9 @@ async function getDeckId(num, param2) {
                 tie = 0;
                 initialCard();
         };
-        if(num ===1){
+        if(num === 1){
             const drawCards = await $.ajax({
-                url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
+                url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=1'
             });
             addCard = drawCards;
             param2 === 'player' ? appendCard() : showDealerCard();
@@ -144,21 +147,15 @@ function playerDealtTwentyOne(){
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
         $($dealerCountElement).text('Dealer Count: '+dealerValue);
         updatePlayerGlobalCount(dealerValue, 'computer');
-        if(playerValue === 21 && dealerValue === 21){
-            showBetAndRound();
-            $dealCardTwo.css('opacity', '1');
-            compareCounts()
-        }else if(playerValue === 21 && dealerValue !== 21){
-            showBetAndRound();
-            $dealCardTwo.css('opacity', '1');
-            compareCounts()
-        }
+        showBetAndRound();
+        $dealCardTwo.css('opacity', '1');
+        compareCounts();
     }
 };
 
 //adds card to screen when player clicks hit, change player count when new card is clicked
 function appendCard(){
-    const $imgEl = $(`<img class="added-card">`);
+    const $imgEl = $(`<img class='added-card'>`);
     $imgEl.insertAfter($yourCardTwo);
     $imgEl.attr('src', `${addCard.cards[0].image}`);
     faceCardToNum(addCard);
@@ -209,8 +206,7 @@ function addDealerCard(){
     const $dealerImgEl = $('<img class="added-card" width="126" height="214">');
     $dealerImgEl.insertAfter($dealCardTwo);
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`);
-    faceCardToNum(addCard)
-
+    faceCardToNum(addCard);
     dealerValue = dealerValue + Number(addCard.cards[0].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     updatePlayerGlobalCount(dealerValue, 'computer');
@@ -284,13 +280,6 @@ function endOfRound(){
         $($showWin).text('Oh no! You lost!');  
         updateMoneyAndBet();
     }
-};
-
-//updates player bet and player money, called when bet button is
-function placeBet(){
-    betAmount = 10;
-    playerMoney = playerMoney - betAmount;
-    updateMoneyAndBet();
 };
 
 function updateMoneyAndBet(){
