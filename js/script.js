@@ -90,7 +90,6 @@ function resetGame() {
 //used to update global variable for player and dealer value
 function updatePlayerGlobalCount(count, param1){
     param1 === 'player' ? count = playerValue : count = dealerValue;
-    // count = playerValue;
 };
 
 // checks if deckId is already set, then draws inital cards.
@@ -130,7 +129,7 @@ function initialCard() {
     $dealCardTwo.attr('src', `${startingCards.cards[1].image}`);
     $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
-    faceCardToNum();
+    faceCardToNum(startingCards);
     dealerValue = Number(startingCards.cards[0].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
@@ -156,100 +155,55 @@ function playerDealtTwentyOne(){
     }
 };
 
-//adds card to screen when player clicks hit
+//adds card to screen when player clicks hit, change player count when new card is clicked
 function appendCard(){
-    const $imgEl = $(`<img class="added-card" width="126" height="214">`);
+    const $imgEl = $(`<img class="added-card">`);
     $imgEl.insertAfter($yourCardTwo);
     $imgEl.attr('src', `${addCard.cards[0].image}`);
-    checkAppendCard();
-    updatePlayerCount();
-};
-
-//used to change player count when new card is clicked
-function updatePlayerCount() {
+    faceCardToNum(addCard);
     playerValue = playerValue + Number(addCard.cards[0].value );
     $($playerCountElement).text('Player Count: '+playerValue);
     updatePlayerGlobalCount(playerValue, 'player');
     overTwentyOne();
-    playerDealtTwentyOne();
+    playerDealtTwentyOne()
 };
 
-//checks starting cards values and assigns values for facecards
-function faceCardToNum(){
-    for(let i=0; i < startingCards.cards.length; i++){
-        switch(startingCards.cards[i].value){
+//checks cards values and assigns values for facecards
+function faceCardToNum(cardsToCheck){
+    for(let i=0; i < cardsToCheck.cards.length; i++){
+        switch(cardsToCheck.cards[i].value){
             case 'QUEEN':
-                startingCards.cards[i].value = 10;
+                cardsToCheck.cards[i].value = 10;
                 break;
             case 'KING':
-                startingCards.cards[i].value = 10;
+                cardsToCheck.cards[i].value = 10;
                 break;
             case 'JACK':
-                startingCards.cards[i].value = 10;
+                cardsToCheck.cards[i].value = 10;
                 break;
             case 'ACE':
                 checkStartAce()
                 function checkStartAce(){
-                    if(startingCards.cards[i].value === "ACE"){
-                        startingCards.cards[i].value = 11;
-                        if((playerValue + startingCards.cards[i].value) > 21 || (dealerValue + startingCards.cards[i].value) > 21 ){
-                            if((playerValue + startingCards.cards[i].value) > 21){
-                                startingCards.cards[i].value = 1;
-                            }else if((dealerValue + startingCards.cards[i].value) > 21){
-                                startingCards.cards[i].value = 1;
+                    if(cardsToCheck.cards[i].value === "ACE"){
+                        cardsToCheck.cards[i].value = 11;
+                        if((playerValue + cardsToCheck.cards[i].value) > 21 || (dealerValue + cardsToCheck.cards[i].value) > 21 ){
+                            if((playerValue + cardsToCheck.cards[i].value) > 21){
+                                cardsToCheck.cards[i].value = 1;
+                            }else if((dealerValue + cardsToCheck.cards[i].value) > 21){
+                                cardsToCheck.cards[i].value = 1;
                             }
-                        }else if ((playerValue + startingCards.cards[i].value) < 21 || (dealerValue + startingCards.cards[i].value) < 21){
-                            if((playerValue + startingCards.cards[i].value) > 21){
-                                startingCards.cards[i].value = 11;
-                            }else if((dealerValue + startingCards.cards[i].value) > 21){
-                                startingCards.cards[i].value = 11;
-                            }
-                        }
-                    }
-                }
-                break;
-            default:
-                startingCards.cards[i].value = startingCards.cards[i].value;
-        }
-    }
-};
-
-////checks cards that are drawn after inital start, assigns values for facecards
-function checkAppendCard(){
-    for(let i=0; i < addCard.cards.length; i++){
-        switch(addCard.cards[i].value){
-            case 'QUEEN':
-                addCard.cards[i].value = 10;
-                break;
-            case 'KING':
-                addCard.cards[i].value = 10;
-                break;
-            case 'JACK':
-                addCard.cards[i].value = 10;
-                break;
-            case 'ACE':
-                checkAce();
-                function checkAce(){
-                    if(addCard.cards[i].value === "ACE"){
-                        addCard.cards[i].value = 11;
-                        if((playerValue + addCard.cards[i].value) > 21 || (dealerValue + addCard.cards[i].value) > 21 ){
-                            if((playerValue + addCard.cards[i].value) > 21){
-                                addCard.cards[i].value = 1;
-                            }else if((dealerValue + addCard.cards[i].value) > 21){
-                                addCard.cards[i].value = 1;
-                            }
-                        }else if ((playerValue + addCard.cards[i].value) < 21 || (dealerValue + addCard.cards[i].value) < 21){
-                            if((playerValue + addCard.cards[i].value) > 21){
-                                addCard.cards[i].value = 11;
-                            }else if((dealerValue + addCard.cards[i].value) > 21){
-                                addCard.cards[i].value = 11;
+                        }else if ((playerValue + cardsToCheck.cards[i].value) < 21 || (dealerValue + cardsToCheck.cards[i].value) < 21){
+                            if((playerValue + cardsToCheck.cards[i].value) > 21){
+                                cardsToCheck.cards[i].value = 11;
+                            }else if((dealerValue + cardsToCheck.cards[i].value) > 21){
+                                cardsToCheck.cards[i].value = 11;
                             }
                         }
                     }
                 }
                 break;
             default:
-                addCard.cards[i].value = addCard.cards[i].value;
+                cardsToCheck.cards[i].value = cardsToCheck.cards[i].value;
         }
     }
 };
@@ -268,7 +222,8 @@ function addDealerCard(){
     const $dealerImgEl = $('<img class="added-card" width="126" height="214">');
     $dealerImgEl.insertAfter($dealCardTwo);
     $dealerImgEl.attr('src', `${addCard.cards[0].image}`);
-    checkAppendCard();
+    faceCardToNum(addCard)
+
     dealerValue = dealerValue + Number(addCard.cards[0].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     updatePlayerGlobalCount(dealerValue, 'computer');
