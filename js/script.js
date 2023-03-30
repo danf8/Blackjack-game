@@ -32,7 +32,7 @@ let startingCards;
 let addCard;
 //used to keep track of player money and bets
 let playerMoney = 100;
-let betAmount = 0;
+let betAmount = 10;
 //used to decide who winner is
 let dealerWon;
 let playerWon;
@@ -60,9 +60,9 @@ function drawCard() {
 
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
-    betAmount = 10;
     playerMoney = playerMoney - betAmount;
-    updateMoneyAndBet();
+    $($amountBetElement).text(`Betting: $${betAmount}`);
+    $($playerMoneyElement).text(`Amount Remaining: $${playerMoney}`);
     $($showWin).css('opacity', '0');
     $($resetElement).css('opacity', '1');
     $($startElement).css('opacity', '1');
@@ -263,27 +263,17 @@ function compareCounts(){
 function endOfRound(){
     if(tie){
         playerMoney = playerMoney ;
-        betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'grey'});
         $($showWin).text('It\'s a Tie');
-        updateMoneyAndBet();
     }else if(playerWon){
         playerMoney = playerMoney + (betAmount * 2);
-        betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
         $($showWin).text('You\'ve won!');
-        updateMoneyAndBet();
     }else if(dealerWon){
         playerMoney = playerMoney;
-        betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
         $($showWin).text('Oh no! You lost!');  
-        updateMoneyAndBet();
     }
-};
-
-function updateMoneyAndBet(){
-    $($amountBetElement).text(`Betting: $${betAmount}`);
     $($playerMoneyElement).text(`Amount Remaining: $${playerMoney}`);
 };
 
