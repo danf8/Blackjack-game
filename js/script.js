@@ -237,43 +237,40 @@ function overTwentyOne() {
         showBetAndRound()
         playerWon = false;
         dealerWon = true;
+        compareCounts();
     }else if(dealerValue >= 22){
         showBetAndRound()
         dealerWon = false;
         playerWon = true;
-    }endOfRound();
+        compareCounts();
+    }
 };
 
-//calculates who is closer to 21 and sets correct variable to true or false
+//calculates who is closer to 21 and used to check at end of round if player has won/lost/tied and update players money
 function compareCounts(){
     let compareDealer = 21 - dealerValue;
     let comparePlayer = 21 - playerValue;
-    if(compareDealer === comparePlayer){
-        tie = true;
-    }else if(compareDealer > comparePlayer){
-        dealerWon = false;
-        playerWon = true;
-    }else if(compareDealer < comparePlayer){
-        dealerWon = true;
-        playerWon = false;
-    }endOfRound();
-};
-
-//used to check at end of round if player has won/lost/tied and update players money
-function endOfRound(){
-    if(tie){
-        playerMoney = playerMoney ;
-        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
-        $($showWin).text('It\'s a Tie');
-    }else if(playerWon){
-        playerMoney = playerMoney + (betAmount * 2);
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $($showWin).text('You\'ve won!');
-    }else if(dealerWon){
+    if(playerValue >= 22){
         playerMoney = playerMoney;
         $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
         $($showWin).text('Oh no! You lost!');  
-    }
+    } else if(dealerValue >= 22){
+        playerMoney = playerMoney + (betAmount * 2);
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $($showWin).text('You\'ve won!');
+    }else if(compareDealer === comparePlayer){
+        playerMoney = playerMoney ;
+        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
+        $($showWin).text('It\'s a Tie');
+    }else if(compareDealer > comparePlayer){
+        playerMoney = playerMoney + (betAmount * 2);
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $($showWin).text('You\'ve won!');
+    }else if(compareDealer < comparePlayer){
+        playerMoney = playerMoney;
+        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+        $($showWin).text('Oh no! You lost!');  
+    };
     $($playerMoneyElement).text(`Amount Remaining: $${playerMoney}`);
 };
 
