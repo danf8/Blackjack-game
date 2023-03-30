@@ -52,6 +52,10 @@ function clickOnStand() {
     showBetAndRound();
     dealerPlay();
 };
+// when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
+function drawCard() {
+    getDeckId(1)
+}
 
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
@@ -75,7 +79,7 @@ function clickOnStart() {
 function enterGameBoard() {
     $($bet).css('opacity', '1')
     $($enterGame).fadeOut(300);
-    getDeckId();
+    getDeckId(6, 'begin');
 };
 
 //used to reset game 
@@ -94,14 +98,15 @@ function updateComputerGlobalCount(counter){
 };
 
 // checks if deckId is already set, then draws inital cards.
-async function getDeckId() {
+async function getDeckId(num, param2) {
     try {
-        if(!deckId){
+        if(!deckId && num === 6){
         const response = await $.ajax({
             url: "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6"
         });
         deckId = response.deck_id;
         };
+        if(num === 4 || param2 === 'begin'){
         const drawResponse = await $.ajax({
             url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=4"
         });
@@ -110,6 +115,14 @@ async function getDeckId() {
             playerWon = 0;
             tie = 0;
             initialCard();
+        }
+        if(num ===1){
+        const drawCards = await $.ajax({
+            url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
+        })
+        addCard = drawCards;
+        appendCard();
+        }
     } catch (error) {
         console.log('bad request', error);
     }
@@ -147,21 +160,6 @@ function playerDealtTwentyOne(){
             compareCounts()
         }
     }
-};
-
-//when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
-function drawCard(){
-    $.ajax({
-        url: "https://deckofcardsapi.com/api/deck/"+deckId+"/draw/?count=1"
-    }).then(
-        (data) => {
-            addCard = data;
-            appendCard();
-        },
-        (error) => {
-            console.log('bad request');
-        }
-    )
 };
 
 //adds card to screen when player clicks hit
@@ -351,21 +349,18 @@ function endOfRound(){
         betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'grey'});
         $($showWin).text('It\'s a Tie');
-        // showWinLoseTie();
         updateMoneyAndBet();
     }else if(playerWon){
         playerMoney = playerMoney + (betAmount * 2);
         betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
         $($showWin).text('You\'ve won!');
-        // showWinLoseTie();
         updateMoneyAndBet();
     }else if(dealerWon){
         playerMoney = playerMoney;
         betAmount = 0;
         $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
         $($showWin).text('Oh no! You lost!');  
-        // showWinLoseTie();
         updateMoneyAndBet();
     }
 };
@@ -389,7 +384,7 @@ function nextRound() {
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
     if(playerMoney > 0){
-        getDeckId()
+        getDeckId(4)
     }else {
         alert('Oh no you ran out of money. Please click reset button to play again.');
     }
@@ -410,16 +405,3 @@ function showBetAndRound(){
     });
 };
 
-//changes html element to disply if win/lose/tie
-// function showWinLoseTie(){
-//     if(tie){
-//         $($showWin).css({'opacity' : '1', 'color' : 'grey'});
-//         $($showWin).text('It\'s a Tie');
-//     }else if(playerWon){
-//         $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-//         $($showWin).text('You\'ve won!');
-//     }else if(dealerWon){
-//         $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-//         $($showWin).text('Oh no! You lost!');       
-//     }
-// };
