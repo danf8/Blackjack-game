@@ -107,6 +107,10 @@ async function getDeckId(num, param2) {
                 url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=4'
             });
                 startingCards = drawResponse;
+                startingCards.cards.filter((c) => {
+                    c.value === 'ACE' ? c.value = 11 : '';
+                    c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
+                })
                 initialCard();
         };
         if(num === 1){
@@ -114,6 +118,10 @@ async function getDeckId(num, param2) {
                 url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=1'
             });
             addCard = drawCards;
+            addCard.cards.filter((c) => {
+                c.value === 'ACE' ? c.value = 11 : '';
+                c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
+            })
             param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : dealerLogic();
         };
         } catch (error) {
@@ -122,16 +130,18 @@ async function getDeckId(num, param2) {
 };
 
 //sets and initial card images and count for game
-function initialCard() {
+function initialCard() { 
     $dealerCard.attr('src',`${startingCards.cards[0].image}`);
     $dealCardTwo.attr('src', `${startingCards.cards[1].image}`);
     $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
-    faceCardToNum(startingCards);
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value)
-    $($dealerCountElement).text('Dealer Count: '+ (dealerValue - Number(startingCards.cards[1].value)));
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
-    $($playerCountElement).text('Player Count: '+playerValue);
+    faceCardToNum(startingCards,playerValue, dealerValue); 
+    $($dealerCountElement).text('Dealer Count: '+ startingCards.cards[0].value);
+    $($playerCountElement).text('Player Count: '+ playerValue);
+    updatePlayerGlobalCount(dealerValue, 'comp');
+    updatePlayerGlobalCount(playerValue, 'player');
     overTwentyOne();
 };
 
@@ -142,43 +152,24 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
     playOrDealer === 'player' ? text = 'Player Count: ' : text = 'Dealer Count: ';
     $imgEl.insertAfter(cardTwo);
     $imgEl.attr('src', `${addCard.cards[0].image}`);
-    faceCardToNum(addCard);
+    faceCardToNum(addCard, playerValue, dealerValue);
     eachVal += Number(addCard.cards[0].value );
     $(countElement).text(text + eachVal);
     updatePlayerGlobalCount(eachVal, playOrDealer);
     overTwentyOne();
 };
 
-//checks cards values and assigns values for facecards
-function faceCardToNum(cardsToCheck){
-    for(let i=0; i < cardsToCheck.cards.length; i++){
-        switch(cardsToCheck.cards[i].value){
-            case 'QUEEN':
-                cardsToCheck.cards[i].value = 10;
-                break;
-            case 'KING':
-                cardsToCheck.cards[i].value = 10;
-                break;
-            case 'JACK':
-                cardsToCheck.cards[i].value = 10;
-                break;
-            case 'ACE':
-                cardsToCheck.cards[i].value = 11;
-                let checkValue = playerValue + cardsToCheck.cards[i].value;
-                let checkDealerValue = dealerValue + cardsToCheck.cards[i].value;
-                checkValue > 21 ? cardsToCheck.cards[i].value === 1 : cardsToCheck.cards[i].value === 11;
-                checkDealerValue > 21 ? cardsToCheck.cards[i].value === 1 : cardsToCheck.cards[i].value === 11;
-                break;
-            default:
-                cardsToCheck.cards[i].value = cardsToCheck.cards[i].value;
-        }
-    }
+// checks cards values for ace and assigns values 
+ function faceCardToNum(cardsToCheck, playVal, dealVal){
+    cardsToCheck.cards.filter((c) => {
+        c.value === 11 && ((dealVal + c.value) > 21) ? c.value = 1 : '';
+        c.value === 11 && ((playVal + c.value) > 21) ? c.value = 1 : '';
+    });
 };
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
     $dealCardTwo.css('opacity', '1');
-    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     while(dealerValue <= 21){
         updatePlayerGlobalCount(dealerValue, 'computer');
@@ -210,7 +201,7 @@ function overTwentyOne() {
         showBetAndRound()
         compareCounts();
     }else if(dealerValue >= 22){
-        showBetAndRound()
+        showBetAndRound();
         compareCounts();
     }
 };
