@@ -139,19 +139,7 @@ function initialCard() {
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $($playerCountElement).text('Player Count: '+playerValue);
-    playerDealtTwentyOne();
-};
-
-//used to check if player was dealt 21 on initial hand
-function playerDealtTwentyOne(){
-    if(playerValue === 21){
-        dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-        $($dealerCountElement).text('Dealer Count: '+dealerValue);
-        updatePlayerGlobalCount(dealerValue, 'computer');
-        showBetAndRound();
-        $dealCardTwo.css('opacity', '1');
-        compareCounts();
-    }
+    overTwentyOne()
 };
 
 // adds card to screen when player clicks hit, change player count when new card is clicked and appends new img and sets img src value 
@@ -164,8 +152,7 @@ function appendCard(playOrDealer){
         playerValue = playerValue + Number(addCard.cards[0].value );
         $($playerCountElement).text('Player Count: '+playerValue);
         updatePlayerGlobalCount(playerValue, 'player');
-        overTwentyOne();
-        playerDealtTwentyOne()
+        overTwentyOne()
     }else{
         $imgEl.insertAfter($dealCardTwo);
         $imgEl.attr('src', `${addCard.cards[0].image}`);
@@ -227,12 +214,19 @@ function dealerLogic(){
     }else if(dealerValue < 17){
         appendCard('computer')
     }
-}if(dealerValue >=22){overTwentyOne()}
+}compareCounts();
 };
 
-//used to check if player or computer go over twenty one
+//used to check if player or computer go over twenty one or if player was dealt 21 on initial hand
 function overTwentyOne() {
-    if(playerValue >= 22){
+    if(playerValue === 21) {
+        dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
+        $($dealerCountElement).text('Dealer Count: '+dealerValue);
+        updatePlayerGlobalCount(dealerValue, 'computer');
+        showBetAndRound();
+        $dealCardTwo.css('opacity', '1');
+        compareCounts();
+    }else if(playerValue >= 22){
         showBetAndRound()
         playerWon = false;
         dealerWon = true;
