@@ -34,10 +34,6 @@ let addCard;
 //used to keep track of player money and bets
 let playerMoney = 100;
 let betAmount = 10;
-//used to decide who winner is
-let dealerWon;
-let playerWon;
-let tie;
 
 //Event listeners
 $($enterGame).on('click', enterGameBoard);
@@ -111,9 +107,6 @@ async function getDeckId(num, param2) {
                 url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=4'
             });
                 startingCards = drawResponse;
-                dealerWon = 0;
-                playerWon = 0;
-                tie = 0;
                 initialCard();
         };
         if(num === 1){
@@ -121,7 +114,7 @@ async function getDeckId(num, param2) {
                 url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=1'
             });
             addCard = drawCards;
-            param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : showDealerCard();
+            param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : dealerLogic();
         };
         } catch (error) {
             console.log('bad request', error);
@@ -135,8 +128,8 @@ function initialCard() {
     $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
     $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
     faceCardToNum(startingCards);
-    dealerValue = Number(startingCards.cards[0].value);
-    $($dealerCountElement).text('Dealer Count: '+dealerValue);
+    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value)
+    $($dealerCountElement).text('Dealer Count: '+ (dealerValue - Number(startingCards.cards[1].value)));
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     $($playerCountElement).text('Player Count: '+playerValue);
     overTwentyOne();
@@ -182,17 +175,11 @@ function faceCardToNum(cardsToCheck){
     }
 };
 
-//shows dealer card, dealer count and checks if dealer value is 21 which is used in playerDealtTwentyOne function above
-function showDealerCard(){
+//used to have dealer draw cards after stand button hit and compare who is the winner
+function dealerLogic(){
     $dealCardTwo.css('opacity', '1');
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
-    updatePlayerGlobalCount(dealerValue, 'computer');
-    dealerLogic();
-};
-
-//used to have dealer draw cards after stand button hit and compare who is the winner
-function dealerLogic(){
     while(dealerValue <= 21){
         updatePlayerGlobalCount(dealerValue, 'computer');
     if(dealerValue === 21){
@@ -221,13 +208,9 @@ function overTwentyOne() {
         compareCounts();
     }else if(playerValue >= 22){
         showBetAndRound()
-        playerWon = false;
-        dealerWon = true;
         compareCounts();
     }else if(dealerValue >= 22){
         showBetAndRound()
-        dealerWon = false;
-        playerWon = true;
         compareCounts();
     }
 };
