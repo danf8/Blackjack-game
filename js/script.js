@@ -20,6 +20,7 @@ const $hitElement = $('#hit');
 const $standElement = $('#stand');
 const $helpElement = $('#help');
 
+
 //used to track player card value
 let playerValue;
 //used to track dealers card value.
@@ -120,7 +121,7 @@ async function getDeckId(num, param2) {
                 url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=1'
             });
             addCard = drawCards;
-            param2 === 'player' ? appendCard() : showDealerCard();
+            param2 === 'player' ? appendCard('player') : showDealerCard();
         };
         } catch (error) {
             console.log('bad request', error);
@@ -153,17 +154,26 @@ function playerDealtTwentyOne(){
     }
 };
 
-//adds card to screen when player clicks hit, change player count when new card is clicked
-function appendCard(){
+// adds card to screen when player clicks hit, change player count when new card is clicked and appends new img and sets img src value 
+function appendCard(playOrDealer){
     const $imgEl = $(`<img class='added-card'>`);
-    $imgEl.insertAfter($yourCardTwo);
-    $imgEl.attr('src', `${addCard.cards[0].image}`);
-    faceCardToNum(addCard);
-    playerValue = playerValue + Number(addCard.cards[0].value );
-    $($playerCountElement).text('Player Count: '+playerValue);
-    updatePlayerGlobalCount(playerValue, 'player');
-    overTwentyOne();
-    playerDealtTwentyOne()
+    if(playOrDealer === 'player'){
+        $imgEl.insertAfter($yourCardTwo);
+        $imgEl.attr('src', `${addCard.cards[0].image}`);
+        faceCardToNum(addCard);
+        playerValue = playerValue + Number(addCard.cards[0].value );
+        $($playerCountElement).text('Player Count: '+playerValue);
+        updatePlayerGlobalCount(playerValue, 'player');
+        overTwentyOne();
+        playerDealtTwentyOne()
+    }else{
+        $imgEl.insertAfter($dealCardTwo);
+        $imgEl.attr('src', `${addCard.cards[0].image}`);
+        faceCardToNum(addCard);
+        dealerValue = dealerValue + Number(addCard.cards[0].value);
+        $($dealerCountElement).text('Dealer Count: '+dealerValue);
+        updatePlayerGlobalCount(dealerValue, 'computer');
+    }
 };
 
 //checks cards values and assigns values for facecards
@@ -201,17 +211,6 @@ function showDealerCard(){
     dealerLogic();
 };
 
-//appends new img and sets img src value 
-function addDealerCard(){
-    const $dealerImgEl = $('<img class="added-card" width="126" height="214">');
-    $dealerImgEl.insertAfter($dealCardTwo);
-    $dealerImgEl.attr('src', `${addCard.cards[0].image}`);
-    faceCardToNum(addCard);
-    dealerValue = dealerValue + Number(addCard.cards[0].value);
-    $($dealerCountElement).text('Dealer Count: '+dealerValue);
-    updatePlayerGlobalCount(dealerValue, 'computer');
-};
-
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
     while(dealerValue <= 21){
@@ -225,8 +224,8 @@ function dealerLogic(){
     }else if(dealerValue <21 && dealerValue >= 17){
             compareCounts();
         break;
-    }else{
-        addDealerCard();
+    }else if(dealerValue < 17){
+        appendCard('computer')
     }
 }if(dealerValue >=22){overTwentyOne()}
 };
