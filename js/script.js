@@ -93,6 +93,7 @@ function updatePlayerGlobalCount(count, param1){
     param1 === 'player' ? playerValue = count : dealerValue = count;
 };
 
+
 // checks if deckId is already set, then draws inital cards.
 async function getDeckId(num, param2) {
     try {
@@ -102,32 +103,22 @@ async function getDeckId(num, param2) {
             });
             deckId = response.deck_id;
         };
-        if(num === 4 || param2 === 'begin'){
-            const drawResponse = await $.ajax({
-                url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=4'
-            });
-                startingCards = drawResponse;
-                startingCards.cards.filter((c) => {
-                    c.value === 'ACE' ? c.value = 11 : '';
-                    c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
-                })
-                initialCard();
-        };
-        if(num === 1){
-            const drawCards = await $.ajax({
-                url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=1'
-            });
-            addCard = drawCards;
-            addCard.cards.filter((c) => {
-                c.value === 'ACE' ? c.value = 11 : '';
-                c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
-            })
-            param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : dealerLogic();
-        };
+        const drawResponse = await $.ajax({
+            url: 'https://deckofcardsapi.com/api/deck/'+deckId+'/draw/?count=' + num
+        });
+        drawResponse.cards.filter((c) => {
+            c.value === 'ACE' ? c.value = 11 : '';
+            c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
+        });
+        num === 4 ? startingCards = drawResponse : addCard = drawResponse 
+        param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : '';
+        param2 === 'dealer' ? dealerLogic() : '';
+        param2 === 'begin' ? initialCard() : '';
         } catch (error) {
             console.log('bad request', error);
     }
 };
+
 
 //sets and initial card images and count for game
 function initialCard() { 
@@ -241,7 +232,7 @@ function nextRound() {
     $('.added-card').remove();
     $dealCardTwo.css('opacity', '0');
     if(playerMoney > 0){
-        getDeckId(4);
+        getDeckId(4, 'begin');
     }else {
         alert('Oh no you ran out of money. Please click reset button to play again.');
     }
