@@ -108,7 +108,7 @@ async function getDeckId(num, param2) {
         num === 4 ? startingCards = drawResponse : addCard = drawResponse 
         param2 === 'player' ? appendCard('player', $playerCardTwo, playerValue, $playerCountElement) : '';
         param2 === 'dealer' ? dealerLogic() : '';
-        param2 === 'begin' ? initialCard() : '';
+        param2 === 'begin' ? initialCard('start') : '';
         } catch (error) {
             console.log('bad request', error);
     }
@@ -116,7 +116,7 @@ async function getDeckId(num, param2) {
 
 
 //sets and initial card images and count for game
-function initialCard() { 
+function initialCard(param) { 
     $('#D-card-one').attr('src',`${startingCards.cards[0].image}`);
     $dealerCardTwo.attr('src', `${startingCards.cards[1].image}`);
     $('#You-card-one').attr('src', `${startingCards.cards[2].image}`);
@@ -126,11 +126,11 @@ function initialCard() {
     checkAceValue(startingCards,playerValue, dealerValue); 
     $dealerCountElement.text('Dealer Count: '+ startingCards.cards[0].value);
     $playerCountElement.text('Player Count: '+ playerValue);
-    overTwentyOne();
+    overTwentyOne(param);
 };
 
 // adds card to screen when player clicks hit and add card for dealer
-function appendCard(playOrDealer, cardTwo, eachVal, countElement){
+function appendCard(playOrDealer, cardTwo, eachVal, countElement, param){
     const $imgEl = $(`<img class='added-card'>`);
     let text;
     playOrDealer === 'player' ? text = 'Player Count: ' : text = 'Dealer Count: ';
@@ -140,7 +140,7 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
     eachVal += Number(addCard.cards[0].value );
     $(countElement).text(text + eachVal);
     updatePlayerGlobalCount(eachVal, playOrDealer);
-    overTwentyOne();
+    overTwentyOne(param);
 };
 
 // checks cards values for ace and assigns values 
@@ -157,52 +157,30 @@ function dealerLogic(){
     $dealerCountElement.text('Dealer Count: '+dealerValue);
     while(dealerValue < 17){
         appendCard('computer', $dealerCardTwo, dealerValue, $dealerCountElement);
-}compareCounts();
+}compareCounts('end-game');
 };
 
 //used to check if player or computer go over twenty one or if player was dealt 21 on initial hand
-function overTwentyOne() {
+function overTwentyOne(param) {
+    console.log(playerValue)
     if(playerValue === 21) {
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
         $dealerCountElement.text('Dealer Count: '+dealerValue);
         updatePlayerGlobalCount(dealerValue, 'computer');
         showBetAndRound();
         $dealerCardTwo.css('opacity', '1');
-        compareCounts();
-    }else if(playerValue >= 22){
-        showBetAndRound()
-        compareCounts();
-    }else if(dealerValue >= 22){
-        showBetAndRound();
-        compareCounts();
-    }
+        compareCounts(param);
+    };
+    playerValue >= 22 ?  compareCounts('over-22') : '';
 };
 
 //calculates who is closer to 21 and used to check at end of round if player has won/lost/tied and update players money
-function compareCounts(){
-    let compareDealer = 21 - dealerValue;
-    let comparePlayer = 21 - playerValue;
-    if(playerValue >= 22){
-        playerMoney = playerMoney;
-        $showWin.css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-        $showWin.text('Oh no! You lost!');  
-    } else if(dealerValue >= 22){
-        playerMoney = playerMoney + (betAmount * 2);
-        $showWin.css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $showWin.text('You\'ve won!');
-    }else if(compareDealer === comparePlayer){
-        playerMoney = playerMoney ;
-        $showWin.css({'opacity' : '1', 'color' : 'grey'});
-        $showWin.text('It\'s a Tie');
-    }else if(compareDealer > comparePlayer){
-        playerMoney = playerMoney + (betAmount * 2);
-        $showWin.css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $showWin.text('You\'ve won!');
-    }else if(compareDealer < comparePlayer){
-        playerMoney = playerMoney;
-        $showWin.css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-        $showWin.text('Oh no! You lost!');  
-    };
+function compareCounts(param){
+    let compareDealer = 21 - dealerValue; 
+    let comparePlayer = 21 - playerValue; 
+    compareDealer === comparePlayer ? (playerMoney += 10, $showWin.text('It\'s a Tie')) : ''; 
+    (compareDealer < comparePlayer && param === 'end-game') || (playerValue >= 22 && param === 'over-22') ? ($showWin.text('Oh no! You lost!'), showBetAndRound()) : '';
+    (compareDealer > comparePlayer && param === 'end-game') || dealerValue >= 22 || (playerValue = 21 && dealerValue != 21 && param === 'start') ? (playerMoney += (betAmount * 3), $showWin.text('You\'ve won!')) : '';
     $playerMoneyElement.text(`Amount Remaining: $${playerMoney}`);
 };
 
@@ -223,6 +201,7 @@ function hideBetAndRound(){
 
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
+    $showWin.css({'opacity' : '1'});
     $bet.css('opacity', '1');
     $bet.on('click', function(){
         $bet.css('opacity', '0');
