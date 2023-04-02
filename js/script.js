@@ -1,8 +1,4 @@
 //Cache element references 
-const $dealerCard = $('#D-card-one');
-const $dealCardTwo = $('#D-card-two');
-const $yourCardOne = $('#You-card-one');
-const $yourCardTwo = $('#You-card-two');
 const $enterGame = $('#enter-the-game');
 const $bet = $('#bet');
 const $showWin = $('.show-win');
@@ -19,7 +15,6 @@ const $resetElement = $('#reset');
 const $hitElement = $('#hit');
 const $standElement = $('#stand');
 const $helpElement = $('#help');
-
 
 //used to track player card value
 let playerValue;
@@ -111,7 +106,7 @@ async function getDeckId(num, param2) {
             c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
         });
         num === 4 ? startingCards = drawResponse : addCard = drawResponse 
-        param2 === 'player' ? appendCard('player', $yourCardTwo, playerValue, $playerCountElement) : '';
+        param2 === 'player' ? appendCard('player', $('#You-card-two'), playerValue, $playerCountElement) : '';
         param2 === 'dealer' ? dealerLogic() : '';
         param2 === 'begin' ? initialCard() : '';
         } catch (error) {
@@ -119,20 +114,17 @@ async function getDeckId(num, param2) {
     }
 };
 
-
 //sets and initial card images and count for game
 function initialCard() { 
-    $dealerCard.attr('src',`${startingCards.cards[0].image}`);
-    $dealCardTwo.attr('src', `${startingCards.cards[1].image}`);
-    $yourCardOne.attr('src', `${startingCards.cards[2].image}`);
-    $yourCardTwo.attr('src', `${startingCards.cards[3].image}`);
+    $('#D-card-one').attr('src',`${startingCards.cards[0].image}`);
+    $('#D-card-two').attr('src', `${startingCards.cards[1].image}`);
+    $('#You-card-one').attr('src', `${startingCards.cards[2].image}`);
+    $('#You-card-two').attr('src', `${startingCards.cards[3].image}`);
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value)
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
-    faceCardToNum(startingCards,playerValue, dealerValue); 
+    checkAceValue(startingCards,playerValue, dealerValue); 
     $($dealerCountElement).text('Dealer Count: '+ startingCards.cards[0].value);
     $($playerCountElement).text('Player Count: '+ playerValue);
-    updatePlayerGlobalCount(dealerValue, 'comp');
-    updatePlayerGlobalCount(playerValue, 'player');
     overTwentyOne();
 };
 
@@ -143,7 +135,7 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
     playOrDealer === 'player' ? text = 'Player Count: ' : text = 'Dealer Count: ';
     $imgEl.insertAfter(cardTwo);
     $imgEl.attr('src', `${addCard.cards[0].image}`);
-    faceCardToNum(addCard, playerValue, dealerValue);
+    checkAceValue(addCard, playerValue, dealerValue);
     eachVal += Number(addCard.cards[0].value );
     $(countElement).text(text + eachVal);
     updatePlayerGlobalCount(eachVal, playOrDealer);
@@ -151,7 +143,7 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
 };
 
 // checks cards values for ace and assigns values 
- function faceCardToNum(cardsToCheck, playVal, dealVal){
+ function checkAceValue(cardsToCheck, playVal, dealVal){
     cardsToCheck.cards.filter((c) => {
         c.value === 11 && ((dealVal + c.value) > 21) ? c.value = 1 : '';
         c.value === 11 && ((playVal + c.value) > 21) ? c.value = 1 : '';
@@ -160,22 +152,10 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
-    $dealCardTwo.css('opacity', '1');
+    $('#D-card-two').css('opacity', '1');
     $($dealerCountElement).text('Dealer Count: '+dealerValue);
-    while(dealerValue <= 21){
-        updatePlayerGlobalCount(dealerValue, 'computer');
-    if(dealerValue === 21){
-        compareCounts();
-        break;
-    }else if(dealerValue >= 22){
-        overTwentyOne();
-        break;
-    }else if(dealerValue <21 && dealerValue >= 17){
-            compareCounts();
-        break;
-    }else if(dealerValue < 17){
-        appendCard('computer', $dealCardTwo, dealerValue, $dealerCountElement);
-    }
+    while(dealerValue < 17){
+        appendCard('computer', $('#D-card-two'), dealerValue, $dealerCountElement);
 }compareCounts();
 };
 
@@ -186,7 +166,7 @@ function overTwentyOne() {
         $($dealerCountElement).text('Dealer Count: '+dealerValue);
         updatePlayerGlobalCount(dealerValue, 'computer');
         showBetAndRound();
-        $dealCardTwo.css('opacity', '1');
+        $('#D-card-two').css('opacity', '1');
         compareCounts();
     }else if(playerValue >= 22){
         showBetAndRound()
@@ -230,12 +210,8 @@ function nextRound() {
     hideBetAndRound();
     //reference element added-card to remove from gameboard 
     $('.added-card').remove();
-    $dealCardTwo.css('opacity', '0');
-    if(playerMoney > 0){
-        getDeckId(4, 'begin');
-    }else {
-        alert('Oh no you ran out of money. Please click reset button to play again.');
-    }
+    $('#D-card-two').css('opacity', '0');
+    playerMoney > 0 ? getDeckId(4, 'begin') : alert('Oh no you ran out of money. Please click reset button to play again.');
 };
 
 //hides bet and round buttons from player
