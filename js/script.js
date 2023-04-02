@@ -1,4 +1,6 @@
 //Cache element references 
+const $dealerCardTwo = $('#D-card-two');
+const $playerCardTwo = $('#You-card-two');
 const $enterGame = $('#enter-the-game');
 const $bet = $('#bet');
 const $showWin = $('.show-win');
@@ -10,11 +12,10 @@ const $playerCountElement = $('#Player-count');
 const $startElement = $('#start');
 const $mainElement = $('main');
 const $buttonElement = $('button');
-const $divElement = $('div');
 const $resetElement = $('#reset');
 const $hitElement = $('#hit');
 const $standElement = $('#stand');
-const $helpElement = $('#help');
+const $dialogAlert = $('#dialog')
 
 //used to track player card value
 let playerValue;
@@ -31,13 +32,13 @@ let playerMoney = 100;
 let betAmount = 10;
 
 //Event listeners
-$($enterGame).on('click', enterGameBoard);
-$($bet).on('click', clickOnBet);
-$($startElement).on('click', clickOnStart);
-$($resetElement).on('click', resetGame);
-$($hitElement).on('click', drawCard);
-$($standElement).on('click', clickOnStand);
-$($nextRoundElement).on('click',nextRound);
+$enterGame.on('click', enterGameBoard);
+$bet.on('click', clickOnBet);
+$startElement.on('click', clickOnStart);
+$resetElement.on('click', resetGame);
+$hitElement.on('click', drawCard);
+$standElement.on('click', clickOnStand);
+$nextRoundElement.on('click',nextRound);
 
 //click stand button, both dealer cards are displayed and dealercount is updated to reflect new count.
 function clickOnStand() {
@@ -53,28 +54,27 @@ function drawCard() {
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
     playerMoney = playerMoney - betAmount;
-    $($amountBetElement).text(`Betting: $${betAmount}`);
-    $($playerMoneyElement).text(`Amount Remaining: $${playerMoney}`);
-    $($showWin).css('opacity', '0');
-    $($resetElement).css('opacity', '1');
-    $($startElement).css('opacity', '1');
-    $($bet).text('Click to Place Bet');
+    $amountBetElement.text(`Betting: $${betAmount}`);
+    $playerMoneyElement.text(`Amount Remaining: $${playerMoney}`);
+    $showWin.css('opacity', '0');
+    $resetElement.css('opacity', '1');
+    $startElement.css('opacity', '1');
+    $bet.text('Click to Place Bet');
 };
 
 //after player clicks start button shows additonal playing buttons and remove start button from screen
 function clickOnStart() {
-    $($helpElement).css('opacity', '1');
-    $($mainElement).css('opacity', '1');
-    $($buttonElement).css('opacity', '1');
-    $($startElement).remove();
+    $mainElement.css('opacity', '1');
+    $buttonElement.css('opacity', '1');
+    $startElement.remove();
     hideBetAndRound();
     getDeckId(4, 'begin');
 };
 
 //used to remove current background and get player to table/game calls getDeckId function
 function enterGameBoard() {
-    $($bet).css('opacity', '1');
-    $($enterGame).fadeOut(300);
+    $bet.css('opacity', '1');
+    $enterGame.fadeOut(300);
     getDeckId(6);
 };
 
@@ -106,7 +106,7 @@ async function getDeckId(num, param2) {
             c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
         });
         num === 4 ? startingCards = drawResponse : addCard = drawResponse 
-        param2 === 'player' ? appendCard('player', $('#You-card-two'), playerValue, $playerCountElement) : '';
+        param2 === 'player' ? appendCard('player', $playerCardTwo, playerValue, $playerCountElement) : '';
         param2 === 'dealer' ? dealerLogic() : '';
         param2 === 'begin' ? initialCard() : '';
         } catch (error) {
@@ -114,17 +114,18 @@ async function getDeckId(num, param2) {
     }
 };
 
+
 //sets and initial card images and count for game
 function initialCard() { 
     $('#D-card-one').attr('src',`${startingCards.cards[0].image}`);
-    $('#D-card-two').attr('src', `${startingCards.cards[1].image}`);
+    $dealerCardTwo.attr('src', `${startingCards.cards[1].image}`);
     $('#You-card-one').attr('src', `${startingCards.cards[2].image}`);
-    $('#You-card-two').attr('src', `${startingCards.cards[3].image}`);
+    $playerCardTwo.attr('src', `${startingCards.cards[3].image}`);
     dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value)
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     checkAceValue(startingCards,playerValue, dealerValue); 
-    $($dealerCountElement).text('Dealer Count: '+ startingCards.cards[0].value);
-    $($playerCountElement).text('Player Count: '+ playerValue);
+    $dealerCountElement.text('Dealer Count: '+ startingCards.cards[0].value);
+    $playerCountElement.text('Player Count: '+ playerValue);
     overTwentyOne();
 };
 
@@ -152,10 +153,10 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement){
 
 //used to have dealer draw cards after stand button hit and compare who is the winner
 function dealerLogic(){
-    $('#D-card-two').css('opacity', '1');
-    $($dealerCountElement).text('Dealer Count: '+dealerValue);
+    $dealerCardTwo.css('opacity', '1');
+    $dealerCountElement.text('Dealer Count: '+dealerValue);
     while(dealerValue < 17){
-        appendCard('computer', $('#D-card-two'), dealerValue, $dealerCountElement);
+        appendCard('computer', $dealerCardTwo, dealerValue, $dealerCountElement);
 }compareCounts();
 };
 
@@ -163,10 +164,10 @@ function dealerLogic(){
 function overTwentyOne() {
     if(playerValue === 21) {
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-        $($dealerCountElement).text('Dealer Count: '+dealerValue);
+        $dealerCountElement.text('Dealer Count: '+dealerValue);
         updatePlayerGlobalCount(dealerValue, 'computer');
         showBetAndRound();
-        $('#D-card-two').css('opacity', '1');
+        $dealerCardTwo.css('opacity', '1');
         compareCounts();
     }else if(playerValue >= 22){
         showBetAndRound()
@@ -183,26 +184,26 @@ function compareCounts(){
     let comparePlayer = 21 - playerValue;
     if(playerValue >= 22){
         playerMoney = playerMoney;
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-        $($showWin).text('Oh no! You lost!');  
+        $showWin.css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+        $showWin.text('Oh no! You lost!');  
     } else if(dealerValue >= 22){
         playerMoney = playerMoney + (betAmount * 2);
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $($showWin).text('You\'ve won!');
+        $showWin.css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $showWin.text('You\'ve won!');
     }else if(compareDealer === comparePlayer){
         playerMoney = playerMoney ;
-        $($showWin).css({'opacity' : '1', 'color' : 'grey'});
-        $($showWin).text('It\'s a Tie');
+        $showWin.css({'opacity' : '1', 'color' : 'grey'});
+        $showWin.text('It\'s a Tie');
     }else if(compareDealer > comparePlayer){
         playerMoney = playerMoney + (betAmount * 2);
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
-        $($showWin).text('You\'ve won!');
+        $showWin.css({'opacity' : '1', 'color' : 'rgb(10, 242, 10)'});
+        $showWin.text('You\'ve won!');
     }else if(compareDealer < comparePlayer){
         playerMoney = playerMoney;
-        $($showWin).css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
-        $($showWin).text('Oh no! You lost!');  
+        $showWin.css({'opacity' : '1', 'color' : 'rgb(240, 10,10)'});
+        $showWin.text('Oh no! You lost!');  
     };
-    $($playerMoneyElement).text(`Amount Remaining: $${playerMoney}`);
+    $playerMoneyElement.text(`Amount Remaining: $${playerMoney}`);
 };
 
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
@@ -210,22 +211,22 @@ function nextRound() {
     hideBetAndRound();
     //reference element added-card to remove from gameboard 
     $('.added-card').remove();
-    $('#D-card-two').css('opacity', '0');
-    playerMoney > 0 ? getDeckId(4, 'begin') : alert('Oh no you ran out of money. Please click reset button to play again.');
+    $dealerCardTwo.css('opacity', '0');
+    playerMoney > 0 ? getDeckId(4, 'begin') : $dialogAlert.modal();
 };
 
 //hides bet and round buttons from player
 function hideBetAndRound(){
-    $($bet).css('opacity', '0');
-    $($nextRoundElement).css('opacity', '0');
+    $bet.css('opacity', '0');
+    $nextRoundElement.css('opacity', '0');
 };
 
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
-    $($bet).css('opacity', '1');
-    $($bet).on('click', function(){
-        $($bet).css('opacity', '0');
-        $($nextRoundElement).css('opacity', '1');
+    $bet.css('opacity', '1');
+    $bet.on('click', function(){
+        $bet.css('opacity', '0');
+        $nextRoundElement.css('opacity', '1');
     });
 };
 
