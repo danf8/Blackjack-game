@@ -53,7 +53,7 @@ function drawCard() {
 
 //game display buttons to start game and update player bet and money
 function clickOnBet() {
-    playerMoney = playerMoney - betAmount;
+    playerMoney -= betAmount;
     $amountBetElement.text(`Betting: $${betAmount}`);
     $playerMoneyElement.text(`Amount Remaining: $${playerMoney}`);
     $showWin.css('opacity', '0');
@@ -106,7 +106,7 @@ async function getDeckId(num, param2) {
             c.value === 'QUEEN' || c.value === 'KING' ||  c.value === 'JACK' ? c.value = 10 : c.value;
         });
         num === 4 ? startingCards = drawResponse : addCard = drawResponse 
-        param2 === 'player' ? appendCard('player', $playerCardTwo, playerValue, $playerCountElement) : '';
+        param2 === 'player' ? appendCard('player', $playerCardTwo, playerValue, $playerCountElement, 'start') : '';
         param2 === 'dealer' ? dealerLogic() : '';
         param2 === 'begin' ? initialCard('start') : '';
         } catch (error) {
@@ -157,12 +157,11 @@ function dealerLogic(){
     $dealerCountElement.text('Dealer Count: '+dealerValue);
     while(dealerValue < 17){
         appendCard('computer', $dealerCardTwo, dealerValue, $dealerCountElement);
-}compareCounts('end-game');
+} compareCounts('end-game');
 };
 
 //used to check if player or computer go over twenty one or if player was dealt 21 on initial hand
 function overTwentyOne(param) {
-    console.log(playerValue)
     if(playerValue === 21) {
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
         $dealerCountElement.text('Dealer Count: '+dealerValue);
@@ -173,6 +172,7 @@ function overTwentyOne(param) {
     };
     playerValue >= 22 ?  compareCounts('over-22') : '';
 };
+
 
 //calculates who is closer to 21 and used to check at end of round if player has won/lost/tied and update players money
 function compareCounts(param){
@@ -201,7 +201,7 @@ function hideBetAndRound(){
 
 //shows bet button and once bet clicked shows next round button
 function showBetAndRound(){
-    $showWin.css({'opacity' : '1'});
+    $showWin.css({'opacity' : '1'}); 
     $bet.css('opacity', '1');
     $bet.on('click', function(){
         $bet.css('opacity', '0');
