@@ -33,6 +33,7 @@ img {
 .show-win{
     grid-area: win;
     text-align: center;
+    color: white;
     opacity: 0;
 }
 
