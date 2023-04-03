@@ -1,4 +1,6 @@
 //Cache element references 
+const $dealCarOne = $('#D-card-one');
+const $playerCardOne = $('#You-card-one');
 const $dealerCardTwo = $('#D-card-two');
 const $playerCardTwo = $('#You-card-two');
 const $enterGame = $('#enter-the-game');
@@ -88,7 +90,6 @@ function updatePlayerGlobalCount(count, param1){
     param1 === 'player' ? playerValue = count : dealerValue = count;
 };
 
-
 // checks if deckId is already set, then draws inital cards.
 async function getDeckId(num, param2) {
     try {
@@ -114,14 +115,13 @@ async function getDeckId(num, param2) {
     }
 };
 
-
 //sets and initial card images and count for game
 function initialCard(param) { 
-    $('#D-card-one').attr('src',`${startingCards.cards[0].image}`);
+    $dealCarOne.attr('src',`${startingCards.cards[0].image}`);
     $dealerCardTwo.attr('src', `${startingCards.cards[1].image}`);
-    $('#You-card-one').attr('src', `${startingCards.cards[2].image}`);
+    $playerCardOne.attr('src', `${startingCards.cards[2].image}`);
     $playerCardTwo.attr('src', `${startingCards.cards[3].image}`);
-    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value)
+    dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
     playerValue = Number(startingCards.cards[2].value) + Number(startingCards.cards[3].value);
     checkAceValue(startingCards,playerValue, dealerValue); 
     $dealerCountElement.text('Dealer Count: '+ startingCards.cards[0].value);
@@ -155,16 +155,15 @@ function appendCard(playOrDealer, cardTwo, eachVal, countElement, param){
 function dealerLogic(){
     $dealerCardTwo.css('opacity', '1');
     $dealerCountElement.text('Dealer Count: '+dealerValue);
-    while(dealerValue < 17){
-        appendCard('computer', $dealerCardTwo, dealerValue, $dealerCountElement);
-} compareCounts('end-game');
+    while(dealerValue < 17) appendCard('computer', $dealerCardTwo, dealerValue, $dealerCountElement);
+    compareCounts('end-game');
 };
 
 //used to check if player or computer go over twenty one or if player was dealt 21 on initial hand
 function overTwentyOne(param) {
     if(playerValue === 21) {
         dealerValue = Number(startingCards.cards[0].value) + Number(startingCards.cards[1].value);
-        $dealerCountElement.text('Dealer Count: '+dealerValue);
+        $dealerCountElement.text('Dealer Count: ' + dealerValue);
         updatePlayerGlobalCount(dealerValue, 'computer');
         showBetAndRound();
         $dealerCardTwo.css('opacity', '1');
@@ -172,7 +171,6 @@ function overTwentyOne(param) {
     };
     playerValue >= 22 ?  compareCounts('over-22') : '';
 };
-
 
 //calculates who is closer to 21 and used to check at end of round if player has won/lost/tied and update players money
 function compareCounts(param){
