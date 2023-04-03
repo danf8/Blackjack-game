@@ -8,10 +8,10 @@ body {
     grid-template-columns: 25% 25% 25% 25%;
     grid-template-rows: auto;
     grid-template-areas: 
-    "header header header win"
-    "main main main  sidebar"
-    "main main main sidebar";
-    background-image: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    "header header header header"
+    "main main win  sidebar"
+    "main main win sidebar";
+    background-image: url("https://images.pexels.com/photos/7594303/pexels-photo-7594303.jpeg?auto=compress&cs=tinysrgb&w=1000");
     background-size: cover;
 }
 
@@ -67,8 +67,7 @@ img {
     display:flex;
     flex-direction: column;
     text-align: right;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 20px;
 }
 
 p{
