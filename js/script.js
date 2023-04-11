@@ -3,7 +3,6 @@ const $dealCarOne = $('#D-card-one');
 const $playerCardOne = $('#You-card-one');
 const $dealerCardTwo = $('#D-card-two');
 const $playerCardTwo = $('#You-card-two');
-const $enterGame = $('#enter-the-game');
 const $bet = $('#bet');
 const $showWin = $('.show-win');
 const $nextRoundElement = $('#next-round');
@@ -11,7 +10,7 @@ const $playerMoneyElement = $('#player-money');
 const $amountBetElement = $('#amount-bet');
 const $dealerCountElement = $('#Dealer-count');
 const $playerCountElement = $('#Player-count');
-const $startElement = $('#start');
+const $dealElement = $('#start');
 const $mainElement = $('main');
 const $buttonElement = $('button');
 const $resetElement = $('#reset');
@@ -34,9 +33,8 @@ let playerMoney = 100;
 let betAmount = 10;
 
 //Event listeners
-$enterGame.on('click', enterGameBoard);
 $bet.on('click', clickOnBet);
-$startElement.on('click', clickOnStart);
+$dealElement.on('click', clickOnStart);
 $resetElement.on('click', resetGame);
 $hitElement.on('click', drawCard);
 $standElement.on('click', clickOnStand);
@@ -47,6 +45,11 @@ function clickOnStand() {
     showBetAndRound();
     getDeckId(1, 'dealer');
 };
+
+//on window load gets deck id from API
+window.onload = function startDeck(){
+    getDeckId(6);
+}
 
 // when function called will draw new card for player and dispaly on screen, also resets variables that are used to determine who wins
 function drawCard() {
@@ -60,24 +63,16 @@ function clickOnBet() {
     $playerMoneyElement.text(`Amount Remaining: $${playerMoney}`);
     $showWin.css('opacity', '0');
     $resetElement.css('opacity', '1');
-    $startElement.css('opacity', '1');
-    $bet.text('Click to Place Bet');
+    $dealElement.css('opacity', '1');
 };
 
 //after player clicks start button shows additonal playing buttons and remove start button from screen
 function clickOnStart() {
     $mainElement.css('opacity', '1');
     $buttonElement.css('opacity', '1');
-    $startElement.remove();
+    $dealElement.remove();
     hideBetAndRound();
     getDeckId(4, 'begin');
-};
-
-//used to remove current background and get player to table/game calls getDeckId function
-function enterGameBoard() {
-    $bet.css('opacity', '1');
-    $enterGame.fadeOut(300);
-    getDeckId(6);
 };
 
 //used to reset game 
