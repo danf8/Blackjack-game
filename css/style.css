@@ -26,13 +26,12 @@ img {
 }
 
 .nav-bar{
-    background-color: red;
     grid-area: header;
     display: flex;
     flex-direction: row;
     color: black;
     height: 80px;
-    background-color: beige;
+    background-color: rgb(61, 199, 146);
     justify-content:space-between;
     align-items: center;
 }
@@ -46,6 +45,7 @@ h1{
     align-self: left;
     justify-self: end;
     padding-right: 20px;
+    color: #0b6dc4;
 }
 #title{
     color: black;
