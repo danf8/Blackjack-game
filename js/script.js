@@ -180,14 +180,15 @@ function compareCounts(param){
 //when next round clicked removes previous cards and checks if player has enough money to continue to next round
 function nextRound() {
     updateBetAndRound('hide');
-    //reference element added-card to remove from gameboard 
+    //reference element to remove from gameboard 
     $('.added-card').remove();
     $dealerCardTwo.css('opacity', '0');
     playerMoney > 0 ? getDeckId(4, 'begin') : $dialogAlert.modal();
 };
 
+//shows or hides bet and round buttons
 function updateBetAndRound(param){
-    param === 'hide' ? ($bet.css('opacity', '0'), $nextRoundElement.css('opacity', '0')) : ($showWin.css({'opacity' : '1'}), $bet.css('opacity', '1'))
+    param === 'hide' ? ($bet.css('opacity', '0'), $nextRoundElement.css('opacity', '0')) : ($showWin.css({'opacity' : '1'}), $bet.css('opacity', '1'));
 };
 
 
